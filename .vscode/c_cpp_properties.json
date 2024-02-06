@@ -1,26 +1,24 @@
 {
-    "configurations": [
-        {
-            "name": "Win32",
-            "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/Engine/Source",
-                "${workspaceFolder}/Engine/Vendor/ImGui",
-                "${workspaceFolder}/Engine/Vendor/ImGuizmo",
-                "${workspaceFolder}/Engine/Vendor/GLFW"
-            ],
-            "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE",
-                "CE_BUILD_LIBRARY",
-                "CORE_BUILD_DLL"
-            ],
-            "compilerPath": "C:\\MinGW\\bin\\gcc.exe",
-            "cStandard": "c17",
-            "cppStandard": "gnu++14",
-            "intelliSenseMode": "windows-gcc-x64"
-        }
-    ],
-    "version": 4
+  "configurations": [
+    {
+      "name": "Win32",
+      "includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/Engine/Source",
+        "${workspaceFolder}/Engine/Vendor/GLFW"
+      ],
+      "defines": [
+        "_DEBUG",
+        "UNICODE",
+        "_UNICODE",
+        "CE_BUILD_LIBRARY",
+        "CORE_BUILD_DLL"
+      ],
+      "compilerPath": "C:\\MinGW\\bin\\gcc.exe",
+      "cStandard": "c17",
+      "cppStandard": "gnu++14",
+      "intelliSenseMode": "windows-gcc-x64"
+    }
+  ],
+  "version": 4
 }

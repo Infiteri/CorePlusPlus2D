@@ -1,5 +1,6 @@
 #include "Screen.h"
 #include "Core/Memory/CeMemory.h"
+#include "Shader/ShaderSystem.h"
 #include <glad/glad.h>
 
 namespace Core
@@ -18,7 +19,7 @@ namespace Core
 
     void GPUScreen::Create()
     {
-        ScreenShader = new Shader("EngineResources/Shaders/Screen.vs.glsl", "EngineResources/Shaders/Screen.fs.glsl");
+        ScreenShader = ShaderSystem::Get("EngineResources/Shaders/Screen");
         ScreenVertexArray = new VertexArray();
         ScreenVertexArray->GenVertexBuffer(ScreenVertices, sizeof(ScreenVertices));
         ScreenVertexArray->GetVertexBuffer()->AddLayout(0, 0, 2);

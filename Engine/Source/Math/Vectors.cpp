@@ -26,4 +26,31 @@ namespace Core
         this->x = x;
         this->y = y;
     }
+
+    Vector4::Vector4()
+    {
+        Set(0, 0, 0, 0);
+    }
+
+    Vector4::Vector4(float x, float y, float z, float w)
+    {
+        Set(x, y, z, w);
+    }
+
+    Vector4::Vector4(const Vector4 &v2)
+    {
+        Set(v2.x, v2.y, v2.z, v2.w);
+    }
+
+    Vector4::~Vector4()
+    {
+    }
+
+    void Vector4::Set(float x, float y, float z, float w)
+    {
+        this->x = x;
+        this->y = y;
+        this->z = z;
+        this->w = w;
+    }
 }

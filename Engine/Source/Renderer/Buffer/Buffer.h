@@ -12,7 +12,7 @@ namespace Core
         Index
     };
 
-    struct BufferLayout
+    struct CE_API  BufferLayout
     {
         CeU32 location;
         CeU32 offset;
@@ -26,7 +26,7 @@ namespace Core
         };
     };
 
-    class Buffer
+    class CE_API Buffer
     {
     private:
         CeU32 id;

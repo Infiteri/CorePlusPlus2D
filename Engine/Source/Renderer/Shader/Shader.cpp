@@ -101,15 +101,15 @@ namespace Core
         glUniformMatrix4fv(GetUniLoc(name), 1, GL_FALSE, x);
     }
 
-    // void Shader::Mat4(Matrix4 *m, const char *name)
-    // {
-    //     Mat4(m->data, name);
-    // }
+    void Shader::Mat4(Matrix4 *m, const char *name)
+    {
+        Mat4(m->data, name);
+    }
 
-    // void Shader::Mat4(Matrix4 m, const char *name)
-    // {
-    //     Mat4(m.data, name);
-    // }
+    void Shader::Mat4(Matrix4 m, const char *name)
+    {
+        Mat4(m.data, name);
+    }
 
     void Shader::Vec2(float x, float y, const char *name)
     {
@@ -117,15 +117,15 @@ namespace Core
         glUniform2f(GetUniLoc(name), x, y);
     }
 
-    // void Shader::Vec2(Vector2 *m, const char *name)
-    // {
-    //     Vec2(m->x, m->y, name);
-    // }
+    void Shader::Vec2(Vector2 *m, const char *name)
+    {
+        Vec2(m->x, m->y, name);
+    }
 
-    // void Shader::Vec2(Vector2 m, const char *name)
-    // {
-    //     Vec2(m.x, m.y, name);
-    // }
+    void Shader::Vec2(Vector2 m, const char *name)
+    {
+        Vec2(m.x, m.y, name);
+    }
 
     void Shader::Vec3(float x, float y, float z, const char *name)
     {
@@ -149,15 +149,15 @@ namespace Core
         glUniform4f(GetUniLoc(name), x, y, z, w);
     }
 
-    // void Shader::Vec4(Vector4 *v, const char *name)
-    // {
-    //     Vec4(v->x, v->y, v->z, v->w, name);
-    // }
+    void Shader::Vec4(Vector4 *v, const char *name)
+    {
+        Vec4(v->x, v->y, v->z, v->w, name);
+    }
 
-    // void Shader::Vec4(Vector4 v, const char *name)
-    // {
-    //     Vec4(v.x, v.y, v.z, v.w, name);
-    // }
+    void Shader::Vec4(Vector4 v, const char *name)
+    {
+        Vec4(v.x, v.y, v.z, v.w, name);
+    }
 
     void Shader::Float(float f, const char *name)
     {

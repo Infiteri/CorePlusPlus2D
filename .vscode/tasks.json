@@ -57,6 +57,7 @@
       "group": {
         "kind": "run"
       },
+    },
     {
       "type": "shell",
       "command": "${workspaceFolder}/Tests/Build.bat",

@@ -1,11 +1,14 @@
 #include "Engine.h"
 #include "Renderer/Renderer.h"
 #include "Logger.h"
+#include "IDManager.h"
 #include "Layer/LayerStack.h"
+#include "GLFW/glfw3.h"
 
 namespace Core
 {
     static EngineState state;
+    static EngineDeltaTimeHolder timer;
 
     EngineState *Engine::GetState()
     {
@@ -32,6 +35,7 @@ namespace Core
         Renderer::Init();
         Renderer::ResizeViewport({state.window->GetWidth(), state.window->GetHeight()});
         LayerStack::Init();
+        IDManager::Init();
     }
 
     void Engine::Init()
@@ -47,13 +51,19 @@ namespace Core
     {
         Renderer::BeginFrame();
         Renderer::Render();
+        LayerStack::Render();
         Renderer::EndFrame();
+
         LayerStack::RenderImGui();
         Renderer::DrawToScreen();
     }
 
     void Engine::Update()
     {
+        float time = (float)glfwGetTime();
+        timer.delta = timer.last - time;
+        timer.last = time;
+
         LayerStack::Update();
         state.window->Update();
     }
@@ -61,5 +71,10 @@ namespace Core
     void Engine::Shutdown()
     {
         delete state.window;
+    }
+
+    float Engine::GetDeltaTime()
+    {
+        return timer.delta;
     }
 }

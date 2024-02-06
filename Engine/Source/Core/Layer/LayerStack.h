@@ -27,6 +27,7 @@ namespace Core
         static void Init();
         static void Destroy();
         static void Update();
+        static void Render();
         static void RenderImGui();
 
         /// @brief Pushes a new layer to the Layer Stack.

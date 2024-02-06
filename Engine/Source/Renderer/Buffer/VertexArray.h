@@ -5,7 +5,7 @@
 
 namespace Core
 {
-    class VertexArray
+    class CE_API VertexArray
     {
     private:
         CeU32 id;

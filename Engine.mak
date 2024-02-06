@@ -6,7 +6,7 @@ ASSEMBLY := Engine
 EXTENSION := .dll
 VP = Engine/Vendor
 COMPILER_FLAGS := -g -std=c++2a #-fPIC
-INCLUDE_FLAGS := -IEngine\Source -IEngine/Vendor/GLFW -IEngine/Vendor/glad/include
+INCLUDE_FLAGS := -IEngine\Source -IEngine/Vendor/GLFW -IEngine/Vendor/glad/include -IEngine/Vendor/stb
 LINKER_FLAGS := -g -shared -LBin -lglfw3 -lglad
 DEFINES := -D_DEBUG -DCE_BUILD_LIBRARY -D_CRT_SECURE_NO_WARNINGS
 

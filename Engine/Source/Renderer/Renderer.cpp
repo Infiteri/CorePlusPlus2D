@@ -1,3 +1,4 @@
+
 #include "Renderer.h"
 #include "Core/Memory/CeMemory.h"
 #include <glad/glad.h>
@@ -5,6 +6,7 @@
 
 #include "Buffer/FrameBuffer.h"
 #include "Shader/Shader.h"
+#include "Shader/ShaderSystem.h"
 #include "Buffer/VertexArray.h"
 #include "Screen.h"
 
@@ -29,25 +31,24 @@ namespace Core
         RenderingState render_state;
         Viewport viewport{1024, 576};
         GPUScreen GPUscreen;
-
-        Shader *ObjShader;
     };
 
     static RendererState *state;
 
-    float data[] = {
-        -100.5f, -100.5f, 0.0f,
-        100.5f, -100.5f, 0.0f,
-        0.0f, 100.5f, 0.0f};
-
-    static VertexArray *vArray;
+    void RENDERER_UploadCameraDataToShader(Shader *s, Camera *c);
 
     void Renderer::Init()
     {
-        gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        state = new RendererState;
+        {
+            gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+            state = new RendererState;
+            state->render_state = RendererState::None;
+        }
 
-        state->render_state = RendererState::None;
+        //? Loading shaders
+        {
+            ShaderSystem::Load("EngineResources/Shaders/Object");
+        }
 
         // Init GPU screen
         state->GPUscreen.viewport = &state->viewport; // ? Due to pointers, it will just work
@@ -60,12 +61,6 @@ namespace Core
         CameraSystem::Activate("TestCamera");
 
         // TODO: Remove at some point
-        state->ObjShader = new Shader("EngineResources/Shaders/Object.vs.glsl", "EngineResources/Shaders/Object.fs.glsl");
-        vArray = new VertexArray();
-        vArray->GenVertexBuffer(data, sizeof(data) * sizeof(float));
-        vArray->GetVertexBuffer()->AddLayout(0, 0, 3);
-        vArray->GetVertexBuffer()->Bind();
-        vArray->Bind();
     }
 
     void Renderer::Shutdown()
@@ -78,30 +73,22 @@ namespace Core
         state->render_state = RendererState::StartingFrame;
 
         state->GPUscreen.ScreenFramebuffer->Bind();
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     void Renderer::Render()
     {
         state->render_state = RendererState::RenderingScene;
 
-        glClearColor(1, 1, 0, 1);
+        glClearColor(0.1, 0.1, 0.1, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         CameraSystem::UpdateActiveCamera();
-        state->ObjShader->Use();
 
         //? Send camera data.
-        {
-            auto active_camera = CameraSystem::GetActiveAsOrtho();
-            if (active_camera)
-            {
-                state->ObjShader->Mat4(active_camera->GetProjection()->data, "uProjection");
-                state->ObjShader->Mat4(active_camera->GetViewInverted().data, "uView");
-            }
-        }
-
-        vArray->Bind();
-        vArray->GetVertexBuffer()->Draw();
+        RENDERER_UploadCameraDataToShader(ShaderSystem::Get("EngineResources/Shaders/Object"), CameraSystem::GetActiveAsOrtho());
     }
 
     void Renderer::EndFrame()
@@ -142,4 +129,45 @@ namespace Core
         }
     }
 
+    void Renderer::UploadTransform(const Matrix4 &transformMatrix)
+    {
+        auto s = ShaderSystem::Get("EngineResources/Shaders/Object");
+        if (s)
+            s->Mat4(transformMatrix, "uTransform");
+    }
+
+    void Renderer::UploadColor(const Vector4 &color)
+    {
+        auto s = ShaderSystem::Get("EngineResources/Shaders/Object");
+        if (s)
+            s->Vec4(color, "uColor");
+    }
+
+    void Renderer::RenderVertexArray(VertexArray *array)
+    {
+        ShaderSystem::UseShaderIfExists("EngineResources/Shaders/Object");
+        array->Bind();
+        array->GetIndexBuffer()->Draw();
+    }
+
+    void Renderer::UploadTexture(Texture *text)
+    {
+
+        auto s = ShaderSystem::Get("EngineResources/Shaders/Object");
+        if (s)
+        {
+            s->Use();
+            text->Use();
+            s->Int(text->GetIndex(), "uColorTexture");
+        }
+    }
+
+    void RENDERER_UploadCameraDataToShader(Shader *s, Camera *c)
+    {
+        if (!s || !c)
+            return;
+
+        s->Mat4(c->GetProjection(), "uProjection");
+        s->Mat4(c->GetView(), "uView");
+    }
 }

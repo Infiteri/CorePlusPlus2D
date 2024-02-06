@@ -18,6 +18,10 @@ namespace Core
     {
     }
 
+    void Layer::OnRender()
+    {
+    }
+
     void Layer::OnUpdate()
     {
     }

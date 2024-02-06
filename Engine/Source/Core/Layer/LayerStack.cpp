@@ -28,6 +28,12 @@ namespace Core
             layer->OnUpdate();
     }
 
+    void LayerStack::Render()
+    {
+        for (Layer *layer : layers)
+            layer->OnRender();
+    }
+
     void LayerStack::RenderImGui()
     {
         for (Layer *layer : layers)

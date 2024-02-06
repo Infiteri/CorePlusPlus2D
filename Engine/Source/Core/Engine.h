@@ -10,6 +10,12 @@ namespace Core
         Window *window;
     };
 
+    struct EngineDeltaTimeHolder
+    {
+        float delta;
+        float last;
+    };
+
     class CE_API Engine
     {
     public:
@@ -26,6 +32,8 @@ namespace Core
         static void Render();
         static void Update();
         static void Shutdown();
+
+        static float GetDeltaTime();
     };
 
 }

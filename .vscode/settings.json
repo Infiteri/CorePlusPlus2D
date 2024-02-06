@@ -64,5 +64,5 @@
   "editor.cursorBlinking": "blink",
   "editor.cursorSmoothCaretAnimation": "off",
   "workbench.activityBar.iconClickBehavior": "toggle",
-  "C_Cpp.errorSquiggles": "disabled"
+  "C_Cpp.errorSquiggles": "enabled"
 }

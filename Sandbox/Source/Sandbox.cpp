@@ -1,21 +1,66 @@
 #include "Core.h"
 #include "Core/EntryPoint.h"
 
-class Sandbox : public Core::Application
+using namespace Core;
+
+float data[] = {
+    -250.5f, -250.5f, 0.0f, 0.0f, 0.0f,
+    250.5f, -250.5f, 0.0f, 1.0f, 0.0f,
+    250.5f, 250.5f, 0.0f, 1.0f, 1.0f,
+    -250.0f, 250.5f, 0.0f, 0.0f, 1.0f};
+
+CeU32 indices[] = {0, 1, 2, 2, 3, 0};
+
+static Shader *ObjShader;
+static VertexArray *vArray;
+
+static Vector2 position{500, 500};
+
+static Texture *text;
+
+class SandboxLayer : public Layer
+{
+public:
+    SandboxLayer(){};
+    ~SandboxLayer(){};
+
+    void OnAttach()
+    {
+        ObjShader = ShaderSystem::Get("EngineResources/Shaders/Object");
+        vArray = new VertexArray();
+        vArray->GenVertexBuffer(data, sizeof(data) * sizeof(float));
+        vArray->GetVertexBuffer()->AddLayout(0, 0, 3);
+        vArray->GetVertexBuffer()->AddLayout(1, 3, 2);
+        vArray->GetVertexBuffer()->Bind();
+        vArray->GenIndexBuffer(indices, sizeof(indices) * sizeof(CeU32));
+        vArray->GetIndexBuffer()->Bind();
+        vArray->Bind();
+
+        text = new Texture("EngineResources/Images/Icons/folder.png");
+    };
+
+    void OnRender()
+    {
+        Renderer::UploadTexture(text);
+        Renderer::UploadColor({0, 1, 0, 1});
+        Renderer::UploadTransform(Matrix4::TranslateVec2(position));
+        Renderer::RenderVertexArray(vArray);
+    };
+};
+
+class Sandbox : public Application
 {
 public:
     Sandbox(){};
     ~Sandbox(){};
 
-    void Update()
+    void Init()
     {
-        if (Core::Input::GetKey(Core::Input::A))
-        {
-        }
+        LayerStack::PushLayer(new SandboxLayer());
     };
 };
 
-Core::Application *Core::CreateApplication()
+Application *Core::CreateApplication()
 {
     return new Sandbox();
 };

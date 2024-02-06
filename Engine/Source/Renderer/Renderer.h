@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Base.h"
+#include "Math/Matrix4.h"
+#include "Buffer/VertexArray.h"
+#include "Texture/Texture.h"
 
 namespace Core
 {
@@ -41,5 +44,12 @@ namespace Core
         static void EndFrame();
         static void DrawToScreen();
         static void Shutdown();
+
+        // ? -- BEGIN TEMP --
+        static void UploadTransform(const Matrix4 &transformMatrix);
+        static void UploadColor(const Vector4 &color);
+        static void RenderVertexArray(VertexArray *array);
+        static void UploadTexture(Texture* text);
+        // ? -- END TEMP ----
     };
 }
