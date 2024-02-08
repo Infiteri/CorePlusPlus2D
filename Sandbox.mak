@@ -5,8 +5,8 @@ OBJ_DIR := Bin-Obj
 ASSEMBLY := Sandbox
 EXTENSION := .exe
 COMPILER_FLAGS := -g -std=c++17 #-fPIC
-INCLUDE_FLAGS := -ISandbox\Source -IEngine/Source -IEngine/Vendor/GLFW -IEngine/Vendor/glad/include
-LINKER_FLAGS := -g -lEngine -L$(BUILD_DIR) -lglfw3 -lglad
+INCLUDE_FLAGS := -ISandbox\Source -IEngine/Source -IEngine/Vendor/GLFW -IEngine/Vendor/glad/include -IEngine/Vendor/ImGui -IEngine/Vendor/YAML/include
+LINKER_FLAGS := -g -lEngine -L$(BUILD_DIR) -lglfw3 -lglad -lImGui -lyaml
 DEFINES := -D_DEBUG -D_CRT_SECURE_NO_WARNINGS   
 # Make does not offer a recursive wildcard function, so here's one:
 rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))

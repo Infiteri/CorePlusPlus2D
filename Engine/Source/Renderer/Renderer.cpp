@@ -5,7 +5,9 @@
 #include <GLFW/glfw3.h>
 
 #include "Buffer/FrameBuffer.h"
+#include "Texture/TextureManager.h"
 #include "Shader/Shader.h"
+#include "Material/MaterialManager.h"
 #include "Shader/ShaderSystem.h"
 #include "Buffer/VertexArray.h"
 #include "Screen.h"
@@ -60,12 +62,15 @@ namespace Core
         CameraSystem::CreateOrthoCamera(1024, 576, "TestCamera");
         CameraSystem::Activate("TestCamera");
 
-        // TODO: Remove at some point
+        TextureManager::Init();
+        MaterialManager::Init();
     }
 
     void Renderer::Shutdown()
     {
         CameraSystem::Shutdown();
+        TextureManager::Shutdown();
+        MaterialManager::Shutdown();
     }
 
     void Renderer::BeginFrame()
@@ -136,11 +141,11 @@ namespace Core
             s->Mat4(transformMatrix, "uTransform");
     }
 
-    void Renderer::UploadColor(const Vector4 &color)
+    void Renderer::UploadColor(const Color &color)
     {
         auto s = ShaderSystem::Get("EngineResources/Shaders/Object");
         if (s)
-            s->Vec4(color, "uColor");
+            s->Vec4(color.r / 255, color.g / 255, color.b / 255, color.a / 255, "uColor");
     }
 
     void Renderer::RenderVertexArray(VertexArray *array)
@@ -152,7 +157,6 @@ namespace Core
 
     void Renderer::UploadTexture(Texture *text)
     {
-
         auto s = ShaderSystem::Get("EngineResources/Shaders/Object");
         if (s)
         {

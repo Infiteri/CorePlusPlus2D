@@ -18,6 +18,21 @@ namespace Core
         void Set(float x, float y);
     };
 
+        class CE_API Vector3
+    {
+    public:
+        float x;
+        float y;
+        float z;
+
+        Vector3();
+        Vector3(float x, float y, float z);
+        Vector3(const Vector3 &v2);
+        ~Vector3();
+
+        void Set(float x, float y, float z);
+    };
+
     class CE_API Vector4
     {
     public:

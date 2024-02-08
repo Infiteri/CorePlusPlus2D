@@ -60,6 +60,11 @@ namespace Core
 
     Texture::~Texture()
     {
+        Destroy();
+    }
+
+    void Texture::Destroy()
+    {
         if (image)
             delete image;
         image = nullptr;
@@ -68,10 +73,13 @@ namespace Core
         id = 0;
         index = 0;
         IDManager::RemoveOneFromTextureIndex();
+
+        loaded = false;
     }
 
     void Texture::Load()
     {
+
         Load("", nullptr);
     }
 
@@ -82,6 +90,9 @@ namespace Core
 
     void Texture::Load(const std::string &filename, Configuration *_config) // TODO: If _config is nullptr, use no config and make sure to use defaults. Users fault might warn in future. REVISE ME
     {
+        if (loaded)
+            Destroy();
+
         GenNewIndex();
         glGenTextures(1, &id);
         Bind();
@@ -98,6 +109,8 @@ namespace Core
             LoadWithNeedConfig(image->GetWidth(), image->GetHeight(), image->GetChannels(), image->GetData(), _config);
             image->FreeData();
         }
+
+        loaded = true;
     }
 
     void Texture::Bind()
@@ -114,5 +127,18 @@ namespace Core
     {
         glActiveTexture(GL_TEXTURE0 + index);
         Bind();
+    }
+
+    void Texture::BindType(Type _type)
+    {
+        type = _type;
+    }
+
+    std::string Texture::GetImageName()
+    {
+        if (image)
+            return image->GetName();
+        else
+            return "";
     }
 }

@@ -32,6 +32,24 @@ namespace Core
         return m;
     }
 
+    Matrix4 Matrix4::Translate(Vector3 *v2)
+    {
+        Matrix4 m;
+        m.data[12] = v2->x;
+        m.data[13] = v2->y;
+        m.data[14] = v2->z;
+        return m;
+    }
+
+    Matrix4 Matrix4::Translate(const Vector3 &v2)
+    {
+        Matrix4 m;
+        m.data[12] = v2.x;
+        m.data[13] = v2.y;
+        m.data[14] = v2.z;
+        return m;
+    }
+
     Matrix4 Matrix4::Invert(Matrix4 *a)
     {
         Matrix4 m;

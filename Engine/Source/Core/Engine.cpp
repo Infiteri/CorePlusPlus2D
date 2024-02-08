@@ -3,7 +3,9 @@
 #include "Logger.h"
 #include "IDManager.h"
 #include "Layer/LayerStack.h"
-#include "GLFW/glfw3.h"
+#include "Layer/ImGuiLayer.h"
+
+#include <GLFW/glfw3.h>
 
 namespace Core
 {
@@ -22,12 +24,14 @@ namespace Core
             Logger::Init(info);
         }
 
+        IDManager::Init();
+
         {
             WindowInformation window_info;
             window_info.x = 0;
             window_info.y = 0;
-            window_info.width = 1920;
-            window_info.height = 780;
+            window_info.width = 1280;
+            window_info.height = 720;
             window_info.title = "What";
             state.window = new Window(window_info);
         }
@@ -35,7 +39,7 @@ namespace Core
         Renderer::Init();
         Renderer::ResizeViewport({state.window->GetWidth(), state.window->GetHeight()});
         LayerStack::Init();
-        IDManager::Init();
+        ImGuiLayer::Init();
     }
 
     void Engine::Init()
@@ -54,8 +58,11 @@ namespace Core
         LayerStack::Render();
         Renderer::EndFrame();
 
-        LayerStack::RenderImGui();
         Renderer::DrawToScreen();
+
+        ImGuiLayer::BeginFrame();
+        LayerStack::RenderImGui();
+        ImGuiLayer::EndFrame();
     }
 
     void Engine::Update()
@@ -70,7 +77,13 @@ namespace Core
 
     void Engine::Shutdown()
     {
+        ImGuiLayer::Shutdown();
         delete state.window;
+    }
+
+    Window *Engine::GetWindow()
+    {
+        return state.window;
     }
 
     float Engine::GetDeltaTime()

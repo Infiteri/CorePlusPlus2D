@@ -1,23 +1,10 @@
 #include "Core.h"
+#include <imgui.h>
 #include "Core/EntryPoint.h"
 
 using namespace Core;
 
-float data[] = {
-    -250.5f, -250.5f, 0.0f, 0.0f, 0.0f,
-    250.5f, -250.5f, 0.0f, 1.0f, 0.0f,
-    250.5f, 250.5f, 0.0f, 1.0f, 1.0f,
-    -250.0f, 250.5f, 0.0f, 0.0f, 1.0f};
-
-CeU32 indices[] = {0, 1, 2, 2, 3, 0};
-
-static Shader *ObjShader;
-static VertexArray *vArray;
-
-static Vector2 position{500, 500};
-
-static Texture *text;
-
+static Core::Mesh *mesh;
 class SandboxLayer : public Layer
 {
 public:
@@ -26,25 +13,32 @@ public:
 
     void OnAttach()
     {
-        ObjShader = ShaderSystem::Get("EngineResources/Shaders/Object");
-        vArray = new VertexArray();
-        vArray->GenVertexBuffer(data, sizeof(data) * sizeof(float));
-        vArray->GetVertexBuffer()->AddLayout(0, 0, 3);
-        vArray->GetVertexBuffer()->AddLayout(1, 3, 2);
-        vArray->GetVertexBuffer()->Bind();
-        vArray->GenIndexBuffer(indices, sizeof(indices) * sizeof(CeU32));
-        vArray->GetIndexBuffer()->Bind();
-        vArray->Bind();
+        mesh = new Mesh();
+        mesh->GetTransform()->Position.Set(100, 100, 0);
+    };
 
-        text = new Texture("EngineResources/Images/Icons/folder.png");
+    void OnImGuiRender()
+    {
+        if (!mesh)
+            return;
+
+        ImGui::Begin("A");
+
+        Transform *t = mesh->GetTransform();
+        float data[3] = {t->Position.x, t->Position.y, t->Position.z};
+        if (ImGui::DragFloat3("Position", data, 0.1))
+        {
+            t->Position.x = data[0];
+            t->Position.y = data[1];
+            t->Position.z = data[2];
+        }
+
+        ImGui::End();
     };
 
     void OnRender()
     {
-        Renderer::UploadTexture(text);
-        Renderer::UploadColor({0, 1, 0, 1});
-        Renderer::UploadTransform(Matrix4::TranslateVec2(position));
-        Renderer::RenderVertexArray(vArray);
+        mesh->Render();
     };
 };
 

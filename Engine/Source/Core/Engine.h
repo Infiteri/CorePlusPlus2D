@@ -25,6 +25,7 @@ namespace Core
         /// @brief If you do something stoopid u deserve the aftermath
         /// @return Engine state*
         static EngineState *GetState();
+        static Window *GetWindow();
 
         static void PreInit();
         static void Init();

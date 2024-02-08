@@ -27,6 +27,32 @@ namespace Core
         this->y = y;
     }
 
+    Vector3::Vector3()
+    {
+        Set(0, 0, 0);
+    }
+
+    Vector3::Vector3(float x, float y, float z)
+    {
+        Set(x, y, z);
+    }
+
+    Vector3::Vector3(const Vector3 &v2)
+    {
+        Set(v2.x, v2.y, v2.z);
+    }
+
+    Vector3::~Vector3()
+    {
+    }
+
+    void Vector3::Set(float x, float y, float z)
+    {
+        this->x = x;
+        this->y = y;
+        this->z = z;
+    }
+
     Vector4::Vector4()
     {
         Set(0, 0, 0, 0);

@@ -4,6 +4,7 @@
 #include "Math/Matrix4.h"
 #include "Buffer/VertexArray.h"
 #include "Texture/Texture.h"
+#include "Color.h"
 
 namespace Core
 {
@@ -47,9 +48,9 @@ namespace Core
 
         // ? -- BEGIN TEMP --
         static void UploadTransform(const Matrix4 &transformMatrix);
-        static void UploadColor(const Vector4 &color);
+        static void UploadColor(const Color &color);
         static void RenderVertexArray(VertexArray *array);
-        static void UploadTexture(Texture* text);
+        static void UploadTexture(Texture *text);
         // ? -- END TEMP ----
     };
 }

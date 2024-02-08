@@ -17,4 +17,6 @@
 #include "Renderer/Buffer/VertexArray.h"
 #include "Renderer/Shader/Shader.h"
 #include "Renderer/Shader/ShaderSystem.h"
-#include "Renderer/Texture/Texture.h"
+#include "Renderer/Texture/TextureManager.h"
+#include "Renderer/Objects/Mesh.h"
+#include "Resource/Loaders/MaterialLoader.h"

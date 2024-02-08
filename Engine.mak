@@ -6,8 +6,8 @@ ASSEMBLY := Engine
 EXTENSION := .dll
 VP = Engine/Vendor
 COMPILER_FLAGS := -g -std=c++2a #-fPIC
-INCLUDE_FLAGS := -IEngine\Source -IEngine/Vendor/GLFW -IEngine/Vendor/glad/include -IEngine/Vendor/stb
-LINKER_FLAGS := -g -shared -LBin -lglfw3 -lglad
+INCLUDE_FLAGS := -IEngine\Source -IEngine/Vendor/GLFW -IEngine/Vendor/glad/include -IEngine/Vendor/stb -IEngine/Vendor/ImGui -IEngine/Vendor/YAML/include
+LINKER_FLAGS := -g -shared -LBin -lglfw3 -lglad -lImGui -lyaml
 DEFINES := -D_DEBUG -DCE_BUILD_LIBRARY -D_CRT_SECURE_NO_WARNINGS
 
 # Make does not offer a recursive wildcard function, so here's one:
