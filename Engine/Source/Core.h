@@ -14,6 +14,7 @@
 #include "Renderer/Camera/OrthographicCamera.h"
 #include "Renderer/Camera/CameraSystem.h"
 #include "Renderer/Renderer.h"
+#include "Renderer/Geometry/Geometry.h"
 #include "Renderer/Buffer/VertexArray.h"
 #include "Renderer/Shader/Shader.h"
 #include "Renderer/Shader/ShaderSystem.h"

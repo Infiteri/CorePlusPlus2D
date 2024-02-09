@@ -5,6 +5,7 @@
 #include "Renderer/Buffer/VertexArray.h"
 #include "Math/Transform.h"
 #include "Renderer/Material/Material.h"
+#include "Renderer/Geometry/Geometry.h"
 
 namespace Core
 {
@@ -13,8 +14,11 @@ namespace Core
     private:
         VertexArray *VArray;
 
+        Geometry *geometry;
         Material *material;
         Transform transform;
+
+        void InitVertexArray();
 
     public:
         Mesh();
@@ -22,7 +26,17 @@ namespace Core
 
         void Render();
 
+        /// @brief Will set material from a file with the passed file name. Old material will be released, by default, a white material is loaded.
+        /// @param filename The material filename.
+        void SetMaterial(const std::string &filename);
+
+        /// @brief Will set the meshes geometry. Remember if for some reasons the geometry is deleted by user, side effects exist.
+        /// @note For no errors, call SetGeometry(new WANTED_GEOMETRY(ARGUMENTS)); So that the new geometry created is owned by the mesh.
+        /// @param geometry The newly wanted geometry.
+        void SetGeometry(Geometry *geometry);
+
         inline Transform *GetTransform() { return &transform; };
         inline Material *GetMaterial() { return material; };
+        inline Geometry *GetGeometry() { return geometry; };
     };
 }

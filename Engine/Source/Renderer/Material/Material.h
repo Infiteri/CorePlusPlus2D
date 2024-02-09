@@ -14,6 +14,7 @@ namespace Core
         {
            std::string name;
            std::string colorTextureName;
+           Color color;
         };
 
     private:

@@ -15,6 +15,7 @@ public:
     {
         mesh = new Mesh();
         mesh->GetTransform()->Position.Set(100, 100, 0);
+        mesh->SetGeometry(new SquareGeometry(100, 100));
     };
 
     void OnImGuiRender()

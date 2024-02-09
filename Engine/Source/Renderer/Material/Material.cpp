@@ -8,12 +8,14 @@ namespace Core
     {
         colorTexture = TextureManager::GetWhiteTexture();
         name = "";
+        color = {255, 255, 255, 255};
     }
 
     Material::Material(Configuration *config)
     {
         name = config->name;
         colorTexture = TextureManager::Get(config->colorTextureName);
+        color.Set(config->color.r, config->color.g, config->color.b, config->color.a);
     }
 
     Material::~Material()

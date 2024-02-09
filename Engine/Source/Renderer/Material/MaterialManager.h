@@ -4,6 +4,7 @@
 #include "Material.h"
 #include <string>
 
+#define CE_DEAFULT_MATERIAL_NAME "CE_DEAFULT_MATERIAL_NAME_DO_NOT_NAME_YOUR_MATERIAL_THIS012854528754165465"
 namespace Core
 {
     struct MaterialReference
