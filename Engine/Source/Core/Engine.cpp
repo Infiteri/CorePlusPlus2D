@@ -4,6 +4,7 @@
 #include "IDManager.h"
 #include "Layer/LayerStack.h"
 #include "Layer/ImGuiLayer.h"
+#include "Scene/World.h"
 
 #include <GLFW/glfw3.h>
 
@@ -40,6 +41,7 @@ namespace Core
         Renderer::ResizeViewport({state.window->GetWidth(), state.window->GetHeight()});
         LayerStack::Init();
         ImGuiLayer::Init();
+        World::Init();
     }
 
     void Engine::Init()
@@ -55,9 +57,9 @@ namespace Core
     {
         Renderer::BeginFrame();
         Renderer::Render();
+        World::RenderActiveScene();
         LayerStack::Render();
         Renderer::EndFrame();
-
         Renderer::DrawToScreen();
 
         ImGuiLayer::BeginFrame();
@@ -72,11 +74,15 @@ namespace Core
         timer.last = time;
 
         LayerStack::Update();
+        World::UpdateActiveScene();
         state.window->Update();
     }
 
     void Engine::Shutdown()
     {
+        Renderer::Shutdown();
+        Logger::Shutdown();
+        World::Shutdown();
         ImGuiLayer::Shutdown();
         delete state.window;
     }

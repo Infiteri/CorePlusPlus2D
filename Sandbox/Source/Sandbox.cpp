@@ -4,7 +4,6 @@
 
 using namespace Core;
 
-static Core::Mesh *mesh;
 class SandboxLayer : public Layer
 {
 public:
@@ -13,34 +12,16 @@ public:
 
     void OnAttach()
     {
-        mesh = new Mesh();
-        mesh->GetTransform()->Position.Set(100, 100, 0);
-        mesh->SetGeometry(new SquareGeometry(100, 100));
+        Scene *scene = World::CreateScene("New_Scene");
+        auto a = scene->SpawnActor<Actor>();
+        auto m = a->AddComponent<MeshComponent>();
+        m->mesh->SetGeometry(new SquareGeometry(100, 100));
+        World::ActiveScene("New_Scene");
+
+        World::StartActiveScene();
     };
 
-    void OnImGuiRender()
-    {
-        if (!mesh)
-            return;
-
-        ImGui::Begin("A");
-
-        Transform *t = mesh->GetTransform();
-        float data[3] = {t->Position.x, t->Position.y, t->Position.z};
-        if (ImGui::DragFloat3("Position", data, 0.1))
-        {
-            t->Position.x = data[0];
-            t->Position.y = data[1];
-            t->Position.z = data[2];
-        }
-
-        ImGui::End();
-    };
-
-    void OnRender()
-    {
-        mesh->Render();
-    };
+    void OnImGuiRender(){};
 };
 
 class Sandbox : public Application

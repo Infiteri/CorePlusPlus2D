@@ -21,3 +21,7 @@
 #include "Renderer/Texture/TextureManager.h"
 #include "Renderer/Objects/Mesh.h"
 #include "Resource/Loaders/MaterialLoader.h"
+
+#include "Scene/Scene.h"
+#include "Scene/Actor.h"
+#include "Scene/World.h"
