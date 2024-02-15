@@ -10,6 +10,7 @@
 #include "Core/Layer/LayerStack.h"
 #include "Core/Memory/CeMemory.h"
 #include "Core/Window.h"
+#include "Platform/Platform.h"
 
 #include "Renderer/Camera/OrthographicCamera.h"
 #include "Renderer/Camera/CameraSystem.h"
@@ -25,3 +26,4 @@
 #include "Scene/Scene.h"
 #include "Scene/Actor.h"
 #include "Scene/World.h"
+#include "Scene/SceneSerializer.h"

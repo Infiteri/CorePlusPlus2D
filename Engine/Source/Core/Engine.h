@@ -5,6 +5,11 @@
 
 namespace Core
 {
+    struct EngineConfiguration
+    {
+        WindowInformation WindowInformation;
+    };
+
     struct EngineState
     {
         Window *window;
@@ -21,6 +26,8 @@ namespace Core
     public:
         Engine(){};
         ~Engine(){};
+
+        static void FeedConfigurationInEngine(EngineConfiguration* cfg);
 
         /// @brief If you do something stoopid u deserve the aftermath
         /// @return Engine state*

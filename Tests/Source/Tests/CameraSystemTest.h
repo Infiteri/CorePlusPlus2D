@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Test.h"
 
 class CameraSystemTest : public Core::Test

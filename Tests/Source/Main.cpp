@@ -1,12 +1,12 @@
 #include "Core.h"
 #include "Tests/CameraSystemTest.h"
+#include "Tests/SceneSavingTest.h"
+#include "Tests/Test.h"
 #include "Core/EntryPoint.h"
 
-using namespace Core;
+static std::vector<Core::Test *> tests;
 
-static std::vector<Test *> tests;
-
-class MainTestApplication : public Application
+class MainTestApplication : public Core::Application
 {
 public:
     MainTestApplication(){};
@@ -37,7 +37,10 @@ public:
     void Shutdown(){};
 };
 
-Core::Application *Core::CreateApplication()
+namespace Core
 {
-    return new MainTestApplication();
+    Application *CreateApplication(Core::EngineConfiguration *config)
+    {
+        return new MainTestApplication();
+    }
 }

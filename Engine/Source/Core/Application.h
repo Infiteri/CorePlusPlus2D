@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base.h"
+#include "Engine.h"
 
 namespace Core
 {
@@ -17,5 +18,5 @@ namespace Core
         virtual void Shutdown(){};
     };
 
-    Application *CreateApplication();
+    Application *CreateApplication(EngineConfiguration *config);
 }

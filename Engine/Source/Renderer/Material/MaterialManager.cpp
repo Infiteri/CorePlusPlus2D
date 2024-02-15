@@ -11,7 +11,7 @@ namespace Core
     void MaterialManager::Init()
     {
         defaultMaterial = new Material();
-        defaultMaterial->SetName(CE_DEAFULT_MATERIAL_NAME);
+        defaultMaterial->SetName(CE_DEFAULT_MATERIAL_NAME);
     }
 
     void MaterialManager::Shutdown()
@@ -40,7 +40,7 @@ namespace Core
 
     void MaterialManager::Release(const std::string &name)
     {
-        if (name == CE_DEAFULT_MATERIAL_NAME)
+        if (name == CE_DEFAULT_MATERIAL_NAME)
             return;
 
         refs[name]->references--;

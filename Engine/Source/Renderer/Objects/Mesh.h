@@ -16,7 +16,7 @@ namespace Core
 
         Geometry *geometry;
         Material *material;
-        Transform transform;
+        bool isMaterialUnique;
 
         void InitVertexArray();
 
@@ -30,13 +30,18 @@ namespace Core
         /// @param filename The material filename.
         void SetMaterial(const std::string &filename);
 
+        /// @brief Sets a material from config. Will be marked as unique
+        /// @param config The config to use.
+        void SetMaterial(Material::Configuration *config);
+
         /// @brief Will set the meshes geometry. Remember if for some reasons the geometry is deleted by user, side effects exist.
         /// @note For no errors, call SetGeometry(new WANTED_GEOMETRY(ARGUMENTS)); So that the new geometry created is owned by the mesh.
         /// @param geometry The newly wanted geometry.
         void SetGeometry(Geometry *geometry);
 
-        inline Transform *GetTransform() { return &transform; };
         inline Material *GetMaterial() { return material; };
         inline Geometry *GetGeometry() { return geometry; };
+
+        inline bool IsMaterialUnique() { return isMaterialUnique; };
     };
 }

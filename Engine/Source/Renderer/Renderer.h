@@ -5,6 +5,7 @@
 #include "Buffer/VertexArray.h"
 #include "Texture/Texture.h"
 #include "Color.h"
+#include "Buffer/FrameBuffer.h"
 
 namespace Core
 {
@@ -45,6 +46,8 @@ namespace Core
         static void EndFrame();
         static void DrawToScreen();
         static void Shutdown();
+
+        static FrameBuffer *GetFrameBuffer();
 
         // ? -- BEGIN TEMP --
         static void UploadTransform(const Matrix4 &transformMatrix);

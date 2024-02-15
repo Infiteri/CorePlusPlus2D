@@ -6,7 +6,7 @@ SET Start_Time=%TIME%
 
 REM Execute the make commands
 make -f "Engine.mak" all
-make -f "Sandbox.mak" all
+make -f "Editor.mak" all
 
 REM Record the end time
 SET End_Time=%TIME%

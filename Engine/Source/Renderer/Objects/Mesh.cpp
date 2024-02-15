@@ -11,6 +11,8 @@ namespace Core
         VArray = nullptr;
         geometry = new Geometry();
         InitVertexArray();
+
+        isMaterialUnique = false;
         material = MaterialManager::GetDefault();
     }
 
@@ -52,16 +54,28 @@ namespace Core
     void Mesh::Render()
     {
         material->Use();
-        Renderer::UploadTransform(transform.GetTransformMatrix());
         Renderer::RenderVertexArray(VArray);
     }
 
     void Mesh::SetMaterial(const std::string &filename)
     {
+        isMaterialUnique = false;
         if (material)
             MaterialManager::Release(material->GetName());
 
         material = MaterialManager::Get(filename);
+    }
+
+    void Mesh::SetMaterial(Material::Configuration *config)
+    {
+        if (material && material->GetName() != CE_DEFAULT_MATERIAL_NAME)
+        {
+            MaterialManager::Release(material->GetName());
+            material = nullptr;
+        }
+
+        isMaterialUnique = true;
+        material = new Material(config);
     }
 
     void Mesh::SetGeometry(Geometry *_geometry)

@@ -2,12 +2,13 @@ DIR := $(subst /,\,${CURDIR})
 BUILD_DIR := Bin
 OBJ_DIR := Bin-Obj
 
-ASSEMBLY := Sandbox
+ASSEMBLY := Editor
 EXTENSION := .exe
 COMPILER_FLAGS := -g -std=c++17 #-fPIC
-INCLUDE_FLAGS := -ISandbox\Source -IEngine/Source -IEngine/Vendor/GLFW -IEngine/Vendor/glad/include -IEngine/Vendor/ImGui -IEngine/Vendor/YAML/include
-LINKER_FLAGS := -g -lEngine -L$(BUILD_DIR) -lglfw3 -lglad -lImGui -lyaml
-DEFINES := -D_DEBUG -D_CRT_SECURE_NO_WARNINGS   
+INCLUDE_FLAGS := -IEditor\Source -IEngine/Source -IEngine/Vendor/ImGui -IEngine/Vendor/GLFW
+LINKER_FLAGS := -g -lEngine -L$(BUILD_DIR) -lImGui
+DEFINES := -D_DEBUG -D_CRT_SECURE_NO_WARNINGS -DCE_WITH_EDITOR
+
 # Make does not offer a recursive wildcard function, so here's one:
 rwildcard=$(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2))
 

@@ -91,6 +91,8 @@ namespace Core
             indices[i_offset + 4] = v_offset + 3;
             indices[i_offset + 5] = v_offset + 1;
         }
+
+        type = Square;
     }
 
     SquareGeometry::~SquareGeometry()

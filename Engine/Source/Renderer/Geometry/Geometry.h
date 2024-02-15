@@ -14,9 +14,17 @@ namespace Core
 
     class CE_API Geometry
     {
+    public:
+        enum Type
+        {
+            None,
+            Square
+        };
+
     protected:
         std::vector<Vertex3D> vertices;
         std::vector<CeU32> indices;
+        Type type = None;
 
     public:
         Geometry(){};
@@ -27,6 +35,8 @@ namespace Core
 
         inline CeU32 GetVerticesSize() { return vertices.size() * sizeof(float); };
         inline CeU32 GetIndicesSize() { return indices.size() * sizeof(CeU32); };
+
+        inline Type GetType() { return type; };
     };
 
     class CE_API SquareGeometry : public Geometry

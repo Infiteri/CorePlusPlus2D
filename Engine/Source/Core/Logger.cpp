@@ -135,6 +135,9 @@ namespace Core
 
     void Logger::DefineLogCategory(const char *pending, const std::string &name)
     {
+        if (categories[name])
+            return;
+
         categories[name] = new LogCategory;
         categories[name]->Pending = pending;
     }

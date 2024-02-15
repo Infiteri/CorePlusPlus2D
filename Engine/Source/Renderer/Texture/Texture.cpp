@@ -79,12 +79,13 @@ namespace Core
 
     void Texture::Load()
     {
-
+        BindType(EmptyLoaded);
         Load("", nullptr);
     }
 
     void Texture::Load(const std::string &filename)
     {
+        BindType(ResourceLoaded);
         Load(filename, nullptr);
     }
 
@@ -109,6 +110,20 @@ namespace Core
             LoadWithNeedConfig(image->GetWidth(), image->GetHeight(), image->GetChannels(), image->GetData(), _config);
             image->FreeData();
         }
+
+        loaded = true;
+    }
+
+    void Texture::Load(CeU8 *data, float width, float height, int channels)
+    {
+        if (loaded)
+            Destroy();
+
+        GenNewIndex();
+        glGenTextures(1, &id);
+        Bind();
+
+        LoadWithNeedConfig(width, height, channels, data, nullptr);
 
         loaded = true;
     }
@@ -140,5 +155,21 @@ namespace Core
             return image->GetName();
         else
             return "";
+    }
+
+    int Texture::GetWidth()
+    {
+        if (!image)
+            return 100;
+
+        return image->GetWidth();
+    }
+
+    int Texture::GetHeight()
+    {
+        if (!image)
+            return 100;
+
+        return image->GetWidth();
     }
 }

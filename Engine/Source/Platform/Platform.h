@@ -58,6 +58,13 @@ namespace Core
 
         // ------------------------------------------------
 
+        // --------------- FILE DIALOGS ------------------
+
+        static std::string OpenFileDialog(const char *filter);
+        static std::string SaveFileDialog(const char *filter);
+
+        // ------------------------------------------------
+
         static std::string ReadFileContent(const std::string &path);
     };
 

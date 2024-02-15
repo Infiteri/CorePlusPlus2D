@@ -4,7 +4,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "Buffer/FrameBuffer.h"
 #include "Texture/TextureManager.h"
 #include "Shader/Shader.h"
 #include "Material/MaterialManager.h"
@@ -73,6 +72,11 @@ namespace Core
         MaterialManager::Shutdown();
     }
 
+    FrameBuffer *Renderer::GetFrameBuffer()
+    {
+        return state->GPUscreen.ScreenFramebuffer;
+    }
+
     void Renderer::BeginFrame()
     {
         state->render_state = RendererState::StartingFrame;
@@ -87,7 +91,7 @@ namespace Core
     {
         state->render_state = RendererState::RenderingScene;
 
-        glClearColor(0.1, 0.1, 0.1, 1);
+        glClearColor(0.5, 0.5, 0.5, 1);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         CameraSystem::UpdateActiveCamera();

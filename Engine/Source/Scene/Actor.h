@@ -1,7 +1,10 @@
 #pragma once
 
 #include "Base.h"
+#include "Math/Transform.h"
 #include "Components/Component.h"
+#include "Core/UUID.h"
+
 #include <string>
 #include <vector>
 
@@ -24,6 +27,8 @@ namespace Core
         std::string name;
         State state;
         std::vector<Component *> components;
+        UUID uuid;
+        Transform transform;
 
     public:
         Actor();
@@ -40,6 +45,10 @@ namespace Core
 
         inline std::string GetName() { return name; };
         void SetName(std::string nName) { name = nName; };
+
+    inline UUID *GetUUID() { return &uuid; };
+    void SetUUID(UUID uuid);
+    inline Transform *GetTransform() { return &transform; };
 
         // -- COMPONENTS --
         template <typename T, typename... Args>

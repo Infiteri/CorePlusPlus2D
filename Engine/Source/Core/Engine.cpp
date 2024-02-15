@@ -12,6 +12,12 @@ namespace Core
 {
     static EngineState state;
     static EngineDeltaTimeHolder timer;
+    static EngineConfiguration *config;
+
+    void Engine::FeedConfigurationInEngine(EngineConfiguration *cfg)
+    {
+        config = cfg;
+    }
 
     EngineState *Engine::GetState()
     {
@@ -26,14 +32,21 @@ namespace Core
         }
 
         IDManager::Init();
-
         {
             WindowInformation window_info;
-            window_info.x = 0;
-            window_info.y = 0;
-            window_info.width = 1280;
-            window_info.height = 720;
-            window_info.title = "What";
+            if (config)
+            {
+                window_info = config->WindowInformation;
+            }
+            else
+            {
+                window_info.x = 0;
+                window_info.y = 0;
+                window_info.width = 1280;
+                window_info.height = 720;
+                window_info.title = "Core Engine";
+            }
+
             state.window = new Window(window_info);
         }
 

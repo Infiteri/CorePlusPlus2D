@@ -65,6 +65,14 @@ namespace Core
         state = State::Destroyed;
     }
 
+    void Scene::AddActor(Actor *a)
+    {
+        if (!a)
+            return;
+
+        actors.push_back(a);
+    }
+
     Actor *Scene::AddActor()
     {
         return SpawnActor<Actor>();

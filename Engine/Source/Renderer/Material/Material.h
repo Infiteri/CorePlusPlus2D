@@ -12,9 +12,9 @@ namespace Core
     public:
         struct Configuration
         {
-           std::string name;
-           std::string colorTextureName;
-           Color color;
+            std::string name;
+            std::string colorTextureName;
+            Color color;
         };
 
     private:
@@ -30,6 +30,8 @@ namespace Core
         void Use();
 
         void SetName(const std::string &newName) { name = newName; };
+
+        void SetColorTexture(const std::string& name);
 
         inline Color *GetColor() { return &color; };
         inline Texture *GetColorTexture() { return colorTexture; };

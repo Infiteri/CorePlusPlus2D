@@ -46,6 +46,7 @@ namespace Core
         void Load();
         void Load(const std::string &filename);
         void Load(const std::string &filename, Configuration *config);
+        void Load(CeU8* data, float width, float height, int channels);
 
         void Bind();
         void Unbind();
@@ -60,6 +61,9 @@ namespace Core
         inline Type GetType() { return type; };
 
         std::string GetImageName();
+
+        int GetWidth();
+        int GetHeight();
     };
 
 }

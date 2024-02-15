@@ -43,6 +43,7 @@ namespace Core
         void SetName(std::string nName) { name = nName; };
 
         inline std::vector<Actor *> GetActors() { return actors; };
+        void AddActor(Actor* a);
         Actor *AddActor();
 
         template <typename T>

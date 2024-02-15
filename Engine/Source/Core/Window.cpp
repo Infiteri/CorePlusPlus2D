@@ -1,5 +1,6 @@
 #include "Window.h"
 #include "Renderer/Renderer.h"
+#include "GLFW/glfw3.h"
 
 #include "Input.h"
 
@@ -14,16 +15,33 @@ namespace Core
         info.y = information.y;
         info.width = information.width;
         info.height = information.height;
-        info.title = information.title; // ! Will prolly not work.
+        info.title = information.title;
+        info.mode = information.mode;
+        info.acceptDefaultWindowResizeCallback = information.acceptDefaultWindowResizeCallback; // ! Will prolly not work.
 
         glfwInit();
-        handle = glfwCreateWindow(info.width, info.height, info.title, NULL, NULL);
+
+        GLFWmonitor *monitor = nullptr;
+        if (info.mode == WindowSizeMode::FullScreen)
+            monitor = glfwGetPrimaryMonitor();
+
+        handle = glfwCreateWindow(info.width, info.height, info.title, monitor, NULL);
+
+        switch (info.mode)
+        {
+        case WindowSizeMode::Maximized:
+            glfwMaximizeWindow(handle);
+            break;
+        }
+
         glfwMakeContextCurrent(handle);
 
         //? callbacks
         {
             glfwSetKeyCallback(handle, WINDOW_INTERNAL_Key);
-            glfwSetWindowSizeCallback(handle, WINDOW_INTERNAL_Resize);
+
+            if (info.acceptDefaultWindowResizeCallback)
+                glfwSetWindowSizeCallback(handle, WINDOW_INTERNAL_Resize);
         }
 
         glfwGetWindowSize(handle, &width, &height);

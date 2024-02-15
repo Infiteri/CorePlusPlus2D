@@ -1,5 +1,5 @@
 #include "Actor.h"
-#include "Renderer/Objects/Mesh.h"
+#include "Renderer/Renderer.h"
 
 namespace Core
 {
@@ -47,6 +47,8 @@ namespace Core
     {
         state = Running;
 
+        Renderer::UploadTransform(transform.GetTransformMatrix());
+
         for (Component *c : components)
         {
             c->Render();
@@ -71,5 +73,10 @@ namespace Core
             delete c;
 
         components.clear();
+    }
+
+    void Actor::SetUUID(UUID uuid)
+    {
+        this->uuid = {uuid.Get()};
     }
 }

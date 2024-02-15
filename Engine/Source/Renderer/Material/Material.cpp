@@ -29,4 +29,23 @@ namespace Core
         Renderer::UploadColor(color);
         Renderer::UploadTexture(colorTexture);
     }
+
+    void Material::SetColorTexture(const std::string &name)
+    {
+        if (!name.empty())
+        {
+            if (colorTexture && colorTexture->GetType() != Texture::WhiteDefault)
+                TextureManager::Release(colorTexture->GetImageName());
+
+            colorTexture = nullptr;
+            colorTexture = new Texture(name);
+        }
+        else
+        {
+            if (colorTexture && colorTexture->GetType() != Texture::WhiteDefault)
+                TextureManager::Release(colorTexture->GetImageName());
+
+            colorTexture = TextureManager::GetWhiteTexture();
+        }
+    }
 }

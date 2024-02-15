@@ -5,7 +5,7 @@
 
 namespace Core
 {
-    YAML::Emitter &operator<<(YAML::Emitter &out, Color *color)
+    static YAML::Emitter &operator<<(YAML::Emitter &out, Color *color)
     {
         out << YAML::Flow;
         out << YAML::BeginSeq << color->r << color->g << color->b << color->a << YAML::EndSeq;
@@ -32,10 +32,19 @@ namespace Core
     Material::Configuration MaterialLoader::GetFromFile(const std::string &filename)
     {
         Material::Configuration cfg;
-        YAML::Node node = YAML::LoadFile(filename);
+        std::ifstream stream(filename);
+        if (!stream.good())
+        {
+            CE_CORE_ERROR("MaterialLoader: Failed to load material file. %s", filename.c_str());
+            return cfg;
+        }
+
+        std::stringstream strStream(filename);
+        strStream << stream.rdbuf();
+        YAML::Node node = YAML::Load(strStream.str());
         if (!node)
         {
-            CE_CORE_ERROR("MaterialLoader: Cannot load file '%s'", filename.c_str());
+            CE_CORE_ERROR("MaterialLoader: Unable to load nodes for file (Wrong format) '%s'", filename.c_str());
             return cfg;
         }
 

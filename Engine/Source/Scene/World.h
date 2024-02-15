@@ -19,7 +19,11 @@ namespace Core
         // -------------------
 
         static Scene *CreateScene(const std::string &name);
+        static Scene *Get(const std::string &name);
+        static bool Has(const std::string &name);
+        static Scene *GetActiveScene();
         static void ActiveScene(const std::string &name);
+        static void Delete(const std::string &name);
 
         // SCENE ACTIVATIONS METHODS
         static void InitializeActiveScene();

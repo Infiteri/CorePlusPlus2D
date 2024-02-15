@@ -43,6 +43,21 @@ namespace Core
         return scenes[name];
     }
 
+    Scene *World::Get(const std::string &name)
+    {
+        return scenes[name];
+    }
+
+    bool World::Has(const std::string &name)
+    {
+        return scenes[name] != nullptr;
+    }
+
+    Scene *World::GetActiveScene()
+    {
+        return activeScene;
+    }
+
     void World::ActiveScene(const std::string &name)
     {
         if (scenes[name] == nullptr)
@@ -53,6 +68,18 @@ namespace Core
 
         activeScene = scenes[name];
         InitializeActiveScene();
+    }
+
+    void World::Delete(const std::string &name)
+    {
+        Scene *scene = scenes[name];
+        if (scene)
+        {
+            auto it = scenes.find(name);
+            scenes.erase(it);
+            delete scene;
+            scene = nullptr;
+        }
     }
 
     void World::InitializeActiveScene()
