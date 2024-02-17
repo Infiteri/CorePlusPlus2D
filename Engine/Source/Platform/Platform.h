@@ -28,16 +28,11 @@ namespace Core
 
     struct DynamicLibrary
     {
-        std::string name;
-        bool valid = false;
-        void *internal;
-        std::unordered_map<std::string, DynamicLibraryFunction *> functions;
-    };
+        std::string Name;
+        void *Internal;
+        bool Valid;
 
-    struct DirectoryEntry
-    {
-        bool isFolder;
-        std::string path;
+        std::unordered_map<std::string, DynamicLibraryFunction *> functions;
     };
 
     class CE_API Platform
@@ -55,6 +50,34 @@ namespace Core
         static void Free(void *block);
         static void *Allocate(CeU64 size);
         static void *MemCpy(void *dest, const void *source, CeU64 size);
+
+        // ------------------------------------------------
+
+        // -------------------- LIBRARY -------------------
+        static bool CreateDynamicLibrary(DynamicLibrary *lib, const std::string &name);
+        static bool LibraryLoadFunction(DynamicLibrary *library, const std::string &functionName);
+        static void DestroyDynamicLibrary(DynamicLibrary *lib);
+
+        template <typename T>
+        static T LibraryGetFunction(DynamicLibrary *library, const std::string &funcName)
+        {
+            if (!library || !library->Valid)
+            {
+                CE_CORE_ERROR("Library not valid when searching for function.");
+                return NULL;
+            }
+
+            if (!library->functions[funcName])
+            {
+                if (!LibraryLoadFunction(library, funcName))
+                {
+                    CE_CORE_ERROR("Unable to load function for library when trying to get it.");
+                    return NULL;
+                }
+            }
+
+            return (T)library->functions[funcName]->pfn;
+        };
 
         // ------------------------------------------------
 

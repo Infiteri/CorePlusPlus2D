@@ -1,4 +1,5 @@
 #include "Texture.h"
+#include "Core/Logger.h"
 #include "Core/IDManager.h"
 #include <glad/glad.h>
 
@@ -91,6 +92,7 @@ namespace Core
 
     void Texture::Load(const std::string &filename, Configuration *_config) // TODO: If _config is nullptr, use no config and make sure to use defaults. Users fault might warn in future. REVISE ME
     {
+        CE_CORE_DEBUG("Created texture: %s", filename.c_str());
         if (loaded)
             Destroy();
 
@@ -116,6 +118,7 @@ namespace Core
 
     void Texture::Load(CeU8 *data, float width, float height, int channels)
     {
+        CE_CORE_DEBUG("Created texture: %i", width);
         if (loaded)
             Destroy();
 

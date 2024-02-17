@@ -34,11 +34,17 @@ namespace Core
     {
         if (!name.empty())
         {
-            if (colorTexture && colorTexture->GetType() != Texture::WhiteDefault)
-                TextureManager::Release(colorTexture->GetImageName());
-
+            if (colorTexture)
+            {
+                if (colorTexture->GetImageName() == name)
+                {
+                    return;
+                }
+                else if (colorTexture->GetType() != Texture::WhiteDefault)
+                    TextureManager::Release(colorTexture->GetImageName());
+            }
             colorTexture = nullptr;
-            colorTexture = new Texture(name);
+            colorTexture = TextureManager::Get(name);
         }
         else
         {

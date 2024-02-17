@@ -1,0 +1,1 @@
+g++ -shared -g -ITestLibrary -IEngine/Source TestLibrary/*.cpp -LBin -lEngine -o ./Bin/TestLibrary.dll

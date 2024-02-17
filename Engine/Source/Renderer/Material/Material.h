@@ -12,6 +12,7 @@ namespace Core
     public:
         struct Configuration
         {
+            /// @brief Make this filepath for expected results.
             std::string name;
             std::string colorTextureName;
             Color color;
@@ -31,7 +32,7 @@ namespace Core
 
         void SetName(const std::string &newName) { name = newName; };
 
-        void SetColorTexture(const std::string& name);
+        void SetColorTexture(const std::string &name);
 
         inline Color *GetColor() { return &color; };
         inline Texture *GetColorTexture() { return colorTexture; };

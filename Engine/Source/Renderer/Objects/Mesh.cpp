@@ -59,8 +59,11 @@ namespace Core
 
     void Mesh::SetMaterial(const std::string &filename)
     {
+        if (material && material->GetName() == filename)
+            return;
+
         isMaterialUnique = false;
-        if (material)
+        if (material && material->GetName() != CE_DEFAULT_MATERIAL_NAME)
             MaterialManager::Release(material->GetName());
 
         material = MaterialManager::Get(filename);
@@ -68,7 +71,7 @@ namespace Core
 
     void Mesh::SetMaterial(Material::Configuration *config)
     {
-        if (material && material->GetName() != CE_DEFAULT_MATERIAL_NAME)
+        if (material && !isMaterialUnique && material->GetName() != CE_DEFAULT_MATERIAL_NAME)
         {
             MaterialManager::Release(material->GetName());
             material = nullptr;

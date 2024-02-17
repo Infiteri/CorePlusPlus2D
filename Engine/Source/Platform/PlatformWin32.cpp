@@ -116,6 +116,62 @@ namespace Core
         return vertResult;
     }
 
+    // -- Library --
+    bool Platform::CreateDynamicLibrary(DynamicLibrary *lib, const std::string &name)
+    {
+        lib->Valid = false;
+        lib->Internal = 0;
+        lib->Name = name;
+
+        HMODULE mod = LoadLibrary(name.c_str());
+        if (mod == NULL)
+        {
+            CE_CORE_ERROR("Platform: Loading library '%s' wasn't successful.", name.c_str());
+
+            lib->Valid = false;
+            return false;
+        }
+
+        lib->Internal = mod;
+        lib->Valid = true;
+
+        return true;
+    }
+
+    bool Platform::LibraryLoadFunction(DynamicLibrary *library, const std::string &functionName)
+    {
+        if (!library || !library->Valid)
+            return false;
+
+        FARPROC f_addr = GetProcAddress((HMODULE)library->Internal, functionName.c_str());
+        if (!f_addr)
+            return false;
+
+        DynamicLibraryFunction *f = new DynamicLibraryFunction;
+        f->pfn = (void *)f_addr;
+        f->name = functionName;
+        library->functions[functionName] = f;
+
+        return true;
+    }
+
+    void Platform::DestroyDynamicLibrary(DynamicLibrary *lib)
+    {
+        if (!lib || !lib->Valid)
+        {
+            CE_CORE_WARN("Platform: Unloading cannot be done on library, not valid or nullptr.");
+            return;
+        }
+
+        for (auto it = lib->functions.begin(); it != lib->functions.end(); it++)
+            delete it->second;
+
+        lib->functions.clear();
+
+        FreeLibrary((HMODULE)lib->Internal);
+    }
+    // -- Library --
+
     std::string Platform::OpenFileDialog(const char *filter)
     {
         OPENFILENAMEA ofn;
@@ -134,7 +190,17 @@ namespace Core
         ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
 
         if (GetOpenFileNameA(&ofn) == TRUE)
-            return ofn.lpstrFile;
+        {
+            // Calculate the relative path from the current directory
+            std::string fullPath = ofn.lpstrFile;
+            std::string currentDirectory = currentDir;
+            if (fullPath.find(currentDirectory) == 0)
+            {
+                // Remove the current directory from the full path to get the relative path
+                std::string relativePath = fullPath.substr(currentDirectory.length() + 1);
+                return relativePath;
+            }
+        }
 
         return std::string();
     }

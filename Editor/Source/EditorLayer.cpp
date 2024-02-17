@@ -18,21 +18,21 @@ namespace Core
 
     void EditorLayer::OnAttach()
     {
-        Scene *scene = World::CreateScene("New_Scene");
-        auto a = scene->SpawnActor<Actor>();
-        a->SetName("Mesh Actor");
-        auto m = a->AddComponent<MeshComponent>();
+        // Scene *scene = World::CreateScene("New_Scene");
+        // auto a = scene->SpawnActor<Actor>();
+        // a->SetName("Mesh Actor");
+        // auto m = a->AddComponent<MeshComponent>();
 
-        m->mesh->SetMaterial("EngineResources/Mater6als/Test.ce_mat");
-        m->mesh->SetGeometry(new SquareGeometry(100, 100));
-        World::ActiveScene("New_Scene");
-
-        World::StartActiveScene();
-
-        SceneSerializer serializer(World::GetActiveScene());
-        serializer.Serialize("EngineResources/Scenes/Main.ce_scene");
+        // m->mesh->SetMaterial("EngineResources/Materials/Test.ce_mat");
+        // m->mesh->SetGeometry(new SquareGeometry(100, 100));
         state.saveScenePath = "EngineResources/Scenes/Main.ce_scene"; // TODO: Change
         OpenScene(state.saveScenePath);
+        World::GetActiveScene()->GetActors()[0]->GetComponent<MeshComponent>()->mesh->SetMaterial("EngineResources/Materials/Test.ce_mat");
+        World::GetActiveScene()->GetActors()[0]->GetComponent<MeshComponent>()->mesh->SetMaterial("EngineResources/Materials/Test.ce_mat");
+
+        World::GetActiveScene()->GetActors()[0]->GetComponent<MeshComponent>()->mesh->SetMaterial("EngineResources/Materials/Test.ce_mat");
+        World::GetActiveScene()->GetActors()[0]->GetComponent<MeshComponent>()->mesh->SetMaterial("EngineResources/Materials/Test.ce_mat");
+        World::StartActiveScene();
     }
 
     void EditorLayer::OnImGuiRender()

@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "Platform/Platform.h"
 #include "Renderer/Renderer.h"
 #include "Logger.h"
 #include "IDManager.h"
@@ -13,6 +14,7 @@ namespace Core
     static EngineState state;
     static EngineDeltaTimeHolder timer;
     static EngineConfiguration *config;
+    static DynamicLibrary lib;
 
     void Engine::FeedConfigurationInEngine(EngineConfiguration *cfg)
     {
@@ -55,6 +57,13 @@ namespace Core
         LayerStack::Init();
         ImGuiLayer::Init();
         World::Init();
+
+        Platform::CreateDynamicLibrary(&lib, "TestLibrary.dll");
+        Platform::LibraryLoadFunction(&lib, "TestStuff");
+
+        typedef void (*GameInit)();
+        GameInit f = (GameInit)lib.functions["TestStuff"]->pfn;
+        f();
     }
 
     void Engine::Init()
