@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "Script/ScriptEngine.h"
 
 namespace Core
 {
@@ -23,7 +24,18 @@ namespace Core
     void Scene::Start()
     {
         for (auto a : actors)
+        {
             a->Start();
+
+            // ? Register the script component on each actor
+            {
+                auto script = a->GetComponent<ActorScriptComponent>();
+                if (script)
+                    ScriptEngine::RegisterScript(a->GetName(), script->ClassName, a);
+            }
+        }
+
+        ScriptEngine::StartRuntime();
 
         state = State::Started;
     }
@@ -32,6 +44,8 @@ namespace Core
     {
         for (auto a : actors)
             a->Update();
+
+        ScriptEngine::UpdateRuntime();
 
         state = State::Running;
     }
@@ -48,6 +62,8 @@ namespace Core
     {
         for (auto a : actors)
             a->Stop();
+
+        ScriptEngine::StopRuntime();
 
         state = State::Stopped;
     }

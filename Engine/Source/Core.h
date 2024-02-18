@@ -27,3 +27,5 @@
 #include "Scene/Actor.h"
 #include "Scene/World.h"
 #include "Scene/SceneSerializer.h"
+
+#include "Script/ActorScript.h"

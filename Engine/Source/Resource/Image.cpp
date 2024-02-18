@@ -27,6 +27,9 @@ namespace Core
 
     void Image::FreeData()
     {
+        if (!data)
+            return; // OK, the data was deleted earlier. (Happens in texture where FreeData is called in order to clear RAM and therefore no more data is present)
+
         stbi_image_free(data);
     }
 }

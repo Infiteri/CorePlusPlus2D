@@ -37,4 +37,13 @@ namespace Core
         void Render();
         void Destroy();
     };
+
+    class CE_API ActorScriptComponent : public Component
+    {
+    public:
+        std::string ClassName;
+
+        ActorScriptComponent(){};
+        ~ActorScriptComponent(){};
+    };
 }

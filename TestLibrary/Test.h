@@ -2,7 +2,16 @@
 
 #include "Core.h"
 
-extern "C" __declspec(dllexport) void TestStuff()
+class TestScript : public Core::ActorScript
 {
-    CE_INFO("Hello from within library.");
+public:
+    TestScript(){};
+    ~TestScript(){};
+
+    void OnUpdate()
+    {
+        CE_INFO("YUPI");
+    };
 };
+
+CE_EXPORT_ACTOR_CLASS(TestScript);

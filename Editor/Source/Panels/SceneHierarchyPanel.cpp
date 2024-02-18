@@ -4,6 +4,10 @@
 #include <imgui.h>
 #include "Core.h"
 
+#define CE_POPUP_ADD_COMP(type, name) \
+    if (ImGui::MenuItem(name))        \
+    a->AddComponent<type>()
+
 namespace Core
 {
     static const ImGuiTreeNodeFlags ActorNodeFlags = ImGuiTreeNodeFlags_AllowItemOverlap;
@@ -27,6 +31,7 @@ namespace Core
 
     // -- DRAW UI METHODS --
     void DrawMeshUI(MeshComponent *m, Actor *a);
+    void DrawScriptUI(ActorScriptComponent *s, Actor *a);
     // ---------------------
 
     void SceneHierarchyPanel::RenderGUIActorProperties(Actor *a)
@@ -55,6 +60,20 @@ namespace Core
         {
             EditorUtils::DrawComponentUI<MeshComponent>("Mesh Component", a, [&](MeshComponent *m)
                                                         { DrawMeshUI(m, a); });
+
+            EditorUtils::DrawComponentUI<ActorScriptComponent>("Script Component", a, [&](ActorScriptComponent *m)
+                                                               { DrawScriptUI(m, a); });
+        }
+
+        if (ImGui::Button("Add Component"))
+            ImGui::OpenPopup("AddComponent");
+
+        if (ImGui::BeginPopup("AddComponent"))
+        {
+            CE_POPUP_ADD_COMP(MeshComponent, "Mesh Component");
+            CE_POPUP_ADD_COMP(ActorScriptComponent, "Script Component");
+
+            ImGui::EndPopup();
         }
     }
 
@@ -139,5 +158,15 @@ namespace Core
             }
             ImGui::TreePop();
         }
+    }
+
+    void DrawScriptUI(ActorScriptComponent *s, Actor *a)
+    {
+        char Buffer[256];
+        CeMemory::Zero(Buffer, 256);
+        CeMemory::Copy(Buffer, s->ClassName.c_str(), s->ClassName.size());
+
+        if (ImGui::InputText("Class Name", Buffer, 256))
+            s->ClassName = Buffer;
     }
 }

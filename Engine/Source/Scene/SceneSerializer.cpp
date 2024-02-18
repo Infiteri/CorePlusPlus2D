@@ -148,6 +148,19 @@ namespace Core
             }
         }
 
+        // ? Script component
+        {
+            auto s = a->GetComponent<ActorScriptComponent>();
+            if (s)
+            {
+
+                out << YAML::Key << "ActorScriptComponent";
+                out << YAML::BeginMap;
+                CE_SER_FIELD("ClassName", s->ClassName.c_str());
+                out << YAML::EndMap;
+            }
+        }
+
         out << YAML::EndMap;
     }
 
@@ -254,6 +267,15 @@ namespace Core
                         else
                         {
                         }
+                    }
+                }
+
+                // ? ActorScriptComponent
+                {
+                    auto sc = actor["ActorScriptComponent"];
+                    if (sc)
+                    {
+                        a->AddComponent<ActorScriptComponent>()->ClassName = sc["ClassName"].as<std::string>();
                     }
                 }
 

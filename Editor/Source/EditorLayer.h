@@ -11,10 +11,19 @@ namespace Core
         void MidSceneViewportRenderCall(Scene *scene);
     };
 
+    struct TextureCollection
+    {
+        Texture *IconPlayTexture;
+        Texture *IconStopTexture;
+
+        void Init();
+    };
+
     struct EditorState
     {
         EditorSceneViewport editorSceneViewport;
         SceneHierarchyPanel hierarchyPanel;
+        TextureCollection textureCollection;
 
         std::string saveScenePath;
     };
@@ -28,12 +37,28 @@ namespace Core
         ~EditorLayer();
 
         void OnAttach();
+        void OnUpdate();
         void OnImGuiRender();
 
         void UTIL_ColorThing(const char *label, int target);
 
+        // -- RUNTIME --
+        enum SceneState
+        {
+            SceneStatePlay,
+            SceneStateStop
+        };
+        SceneState currentSceneState;
+
+        void StartSceneRuntime();
+        void StopSceneRuntime();
+        void UpdateRuntime();
+        void UpdateEditor();
+        // -------------
+
         // -- UI --
         void UI_RenderTopToolBar();
+        void UI_RenderPlaySceneBar();
         // --------
 
         // -- SCENE --

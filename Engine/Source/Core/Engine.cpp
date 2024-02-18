@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "Script/ScriptEngine.h"
 #include "Platform/Platform.h"
 #include "Renderer/Renderer.h"
 #include "Logger.h"
@@ -58,12 +59,15 @@ namespace Core
         ImGuiLayer::Init();
         World::Init();
 
-        Platform::CreateDynamicLibrary(&lib, "TestLibrary.dll");
-        Platform::LibraryLoadFunction(&lib, "TestStuff");
+        ScriptEngine::Init();
+        ScriptEngine::LoadLibrary("TestLibrary.dll");
 
-        typedef void (*GameInit)();
-        GameInit f = (GameInit)lib.functions["TestStuff"]->pfn;
-        f();
+        // Platform::CreateDynamicLibrary(&lib, "TestLibrary.dll");
+        // Platform::LibraryLoadFunction(&lib, "TestStuff");
+
+        // typedef void (*GameInit)();
+        // GameInit f = (GameInit)lib.functions["TestStuff"]->pfn;
+        // f();
     }
 
     void Engine::Init()
@@ -96,7 +100,6 @@ namespace Core
         timer.last = time;
 
         LayerStack::Update();
-        World::UpdateActiveScene();
         state.window->Update();
     }
 

@@ -14,10 +14,16 @@ namespace Core
     EditorLayer::~EditorLayer()
     {
         delete state.editorSceneViewport.EditorSceneConfig;
+
+        delete state.textureCollection.IconPlayTexture;
+        delete state.textureCollection.IconStopTexture;
     }
 
     void EditorLayer::OnAttach()
     {
+        state.textureCollection.Init();
+        StopSceneRuntime();
+
         // Scene *scene = World::CreateScene("New_Scene");
         // auto a = scene->SpawnActor<Actor>();
         // a->SetName("Mesh Actor");
@@ -27,12 +33,14 @@ namespace Core
         // m->mesh->SetGeometry(new SquareGeometry(100, 100));
         state.saveScenePath = "EngineResources/Scenes/Main.ce_scene"; // TODO: Change
         OpenScene(state.saveScenePath);
-        World::GetActiveScene()->GetActors()[0]->GetComponent<MeshComponent>()->mesh->SetMaterial("EngineResources/Materials/Test.ce_mat");
-        World::GetActiveScene()->GetActors()[0]->GetComponent<MeshComponent>()->mesh->SetMaterial("EngineResources/Materials/Test.ce_mat");
+    }
 
-        World::GetActiveScene()->GetActors()[0]->GetComponent<MeshComponent>()->mesh->SetMaterial("EngineResources/Materials/Test.ce_mat");
-        World::GetActiveScene()->GetActors()[0]->GetComponent<MeshComponent>()->mesh->SetMaterial("EngineResources/Materials/Test.ce_mat");
-        World::StartActiveScene();
+    void EditorLayer::OnUpdate()
+    {
+        if (currentSceneState == SceneStatePlay)
+            UpdateRuntime();
+        else
+            UpdateEditor();
     }
 
     void EditorLayer::OnImGuiRender()
@@ -41,6 +49,7 @@ namespace Core
 
         // -- UI --
         UI_RenderTopToolBar();
+        UI_RenderPlaySceneBar();
         // --------
 
         ImGui::Begin("Color Editor Edit");
@@ -84,6 +93,22 @@ namespace Core
 
             ImGui::EndMainMenuBar();
         }
+    }
+
+    void EditorLayer::UI_RenderPlaySceneBar()
+    {
+        ImGui::Begin("##topbar");
+
+        Texture *tex = currentSceneState == SceneStatePlay ? state.textureCollection.IconStopTexture : state.textureCollection.IconPlayTexture;
+        if (ImGui::ImageButton((ImTextureID)(CeU64)(CeU32)tex->GetID(), {12, 12}))
+        {
+            if (currentSceneState == SceneStatePlay)
+                StopSceneRuntime();
+            else
+                StartSceneRuntime();
+        }
+
+        ImGui::End();
     }
 
     void EditorLayer::OpenScene()
@@ -145,9 +170,38 @@ namespace Core
         }
     }
 
+    void EditorLayer::StartSceneRuntime()
+    {
+        currentSceneState = SceneStatePlay;
+
+        World::StartActiveScene();
+    }
+
+    void EditorLayer::StopSceneRuntime()
+    {
+        currentSceneState = SceneStateStop;
+
+        World::StopActiveScene();
+    }
+
+    void EditorLayer::UpdateRuntime()
+    {
+        World::UpdateActiveScene();
+    }
+
+    void EditorLayer::UpdateEditor()
+    {
+    }
+
     //? END CORE STATIC
 
     void CoreEditorViewportConfiguration::MidSceneViewportRenderCall(Scene *scene)
     {
+    }
+
+    void TextureCollection::Init()
+    {
+        IconPlayTexture = new Texture("EngineResources/Images/Icons/PlayButton.png");
+        IconStopTexture = new Texture("EngineResources/Images/Icons/StopButton.png");
     }
 }
