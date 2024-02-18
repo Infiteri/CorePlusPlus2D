@@ -170,6 +170,11 @@ namespace Core
         }
     }
 
+    Viewport *Renderer::GetViewport()
+    {
+        return &state->viewport;
+    }
+
     void RENDERER_UploadCameraDataToShader(Shader *s, Camera *c)
     {
         if (!s || !c)

@@ -53,6 +53,11 @@ namespace Core
         this->z = z;
     }
 
+    void Vector3::Set(Vector3 *v)
+    {
+        Set(v->x, v->y, v->z);
+    }
+
     Vector4::Vector4()
     {
         Set(0, 0, 0, 0);

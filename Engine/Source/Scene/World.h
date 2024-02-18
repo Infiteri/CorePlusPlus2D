@@ -25,6 +25,8 @@ namespace Core
         static void ActiveScene(const std::string &name);
         static void Delete(const std::string &name);
 
+        static void CopyToActive(Scene* scene);
+
         // SCENE ACTIVATIONS METHODS
         static void InitializeActiveScene();
         static void StartActiveScene();

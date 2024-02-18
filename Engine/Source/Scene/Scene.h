@@ -30,6 +30,8 @@ namespace Core
         Scene();
         ~Scene();
 
+        static Scene* Copy(Scene* other);
+
         void Init();
         void Start();
         void Update();

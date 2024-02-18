@@ -31,6 +31,7 @@ namespace Core
         ~Vector3();
 
         void Set(float x, float y, float z);
+        void Set(Vector3* v);
     };
 
     class CE_API Vector4

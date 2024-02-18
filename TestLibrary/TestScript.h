@@ -8,10 +8,7 @@ public:
     TestScript(){};
     ~TestScript(){};
 
-    void OnUpdate()
-    {
-        CE_INFO("YUPI");
-    };
+    void OnUpdate();
 };
 
 CE_EXPORT_ACTOR_CLASS(TestScript);

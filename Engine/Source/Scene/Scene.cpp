@@ -1,5 +1,7 @@
 #include "Scene.h"
+#include "Core/Engine.h"
 #include "Script/ScriptEngine.h"
+#include "Renderer/Camera/CameraSystem.h"
 
 namespace Core
 {
@@ -11,6 +13,19 @@ namespace Core
     Scene::~Scene()
     {
         Destroy();
+    }
+
+    Scene *Scene::Copy(Scene *other)
+    {
+        Scene *scene = new Scene();
+
+        scene->SetName(other->GetName());
+        scene->state = other->GetState();
+
+        for (auto a : other->GetActors())
+            scene->SpawnActor<Actor>()->From(a);
+
+        return scene;
     }
 
     void Scene::Init()
@@ -32,6 +47,17 @@ namespace Core
                 auto script = a->GetComponent<ActorScriptComponent>();
                 if (script)
                     ScriptEngine::RegisterScript(a->GetName(), script->ClassName, a);
+            }
+
+            // ? Register camera
+            {
+                auto camera = a->GetComponent<OrthographicCameraComponent>();
+                if (camera)
+                {
+                    camera->Camera->CalculateProjection(Engine::GetWindow()->GetWidth(), Engine::GetWindow()->GetHeight());
+                    CameraSystem::AddOrthographicCamera(camera->Camera, "SceneCamera");
+                    CameraSystem::Activate("SceneCamera");
+                }
             }
         }
 
@@ -63,6 +89,8 @@ namespace Core
         for (auto a : actors)
             a->Stop();
 
+        CameraSystem::EraseCamera("SceneCamera");
+
         ScriptEngine::StopRuntime();
 
         state = State::Stopped;
@@ -72,7 +100,6 @@ namespace Core
     {
         for (auto a : actors)
         {
-            a->Destroy();
             delete a;
         }
 

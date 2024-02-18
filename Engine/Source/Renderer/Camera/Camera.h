@@ -12,7 +12,7 @@ namespace Core
         Matrix4 projection;
         Matrix4 view;
 
-        Vector2 position;
+        Vector3 position;
 
     public:
         Camera();
@@ -24,6 +24,6 @@ namespace Core
         inline Matrix4 *GetProjection() { return &projection; };
         inline Matrix4 *GetView() { return &view; };
         inline Matrix4 GetViewInverted() { return Matrix4::Invert(&view); };
-        inline Vector2 *GetPosition() { return &position; };
+        inline Vector3 *GetPosition() { return &position; };
     };
 }

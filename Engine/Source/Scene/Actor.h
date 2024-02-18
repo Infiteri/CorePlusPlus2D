@@ -41,6 +41,8 @@ namespace Core
         void Stop();
         void Destroy();
 
+        void From(Actor* a);
+
         inline State GetState() { return state; };
 
         inline std::string GetName() { return name; };

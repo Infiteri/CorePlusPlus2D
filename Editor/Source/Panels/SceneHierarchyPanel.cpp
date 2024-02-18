@@ -32,6 +32,7 @@ namespace Core
     // -- DRAW UI METHODS --
     void DrawMeshUI(MeshComponent *m, Actor *a);
     void DrawScriptUI(ActorScriptComponent *s, Actor *a);
+    void DrawOrthoCameraUI(OrthographicCameraComponent *s, Actor *a);
     // ---------------------
 
     void SceneHierarchyPanel::RenderGUIActorProperties(Actor *a)
@@ -63,6 +64,9 @@ namespace Core
 
             EditorUtils::DrawComponentUI<ActorScriptComponent>("Script Component", a, [&](ActorScriptComponent *m)
                                                                { DrawScriptUI(m, a); });
+
+            EditorUtils::DrawComponentUI<OrthographicCameraComponent>("Camera Component", a, [&](OrthographicCameraComponent *m)
+                                                                      { DrawOrthoCameraUI(m, a); });
         }
 
         if (ImGui::Button("Add Component"))
@@ -72,6 +76,7 @@ namespace Core
         {
             CE_POPUP_ADD_COMP(MeshComponent, "Mesh Component");
             CE_POPUP_ADD_COMP(ActorScriptComponent, "Script Component");
+            CE_POPUP_ADD_COMP(OrthographicCameraComponent, "Camera Component");
 
             ImGui::EndPopup();
         }
@@ -168,5 +173,30 @@ namespace Core
 
         if (ImGui::InputText("Class Name", Buffer, 256))
             s->ClassName = Buffer;
+    }
+
+    void DrawOrthoCameraUI(OrthographicCameraComponent *s, Actor *a)
+    {
+        const int OriginCount = 2;
+        const char *Origins[OriginCount] = {"Left", "Middle"};
+        const char *OriginSelected = Origins[s->Camera->GetOriginPoint()];
+        if (ImGui::BeginCombo("Origin", OriginSelected))
+        {
+            for (int i = 0; i < OriginCount; i++)
+            {
+                bool isSelected = (OriginSelected == Origins[i]);
+
+                if (ImGui::Selectable(Origins[i], isSelected))
+                {
+                    OriginSelected = Origins[i];
+                    s->Camera->SetOriginPoint((OrthographicCamera::OriginPoint)i);
+                }
+
+                if (isSelected)
+                    ImGui::SetItemDefaultFocus();
+            }
+
+            ImGui::EndCombo();
+        }
     }
 }

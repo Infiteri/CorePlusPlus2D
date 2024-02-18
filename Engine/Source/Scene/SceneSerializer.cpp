@@ -161,6 +161,19 @@ namespace Core
             }
         }
 
+        // ? Camera component
+        {
+            auto c = a->GetComponent<OrthographicCameraComponent>();
+            if (c)
+            {
+
+                out << YAML::Key << "OrthographicCameraComponent";
+                out << YAML::BeginMap;
+                CE_SER_FIELD("OriginPoint", c->Camera->GetOriginPoint())
+                out << YAML::EndMap;
+            }
+        }
+
         out << YAML::EndMap;
     }
 
@@ -276,6 +289,18 @@ namespace Core
                     if (sc)
                     {
                         a->AddComponent<ActorScriptComponent>()->ClassName = sc["ClassName"].as<std::string>();
+                    }
+                }
+
+                // ? ActorScriptComponent
+                {
+                    auto sc = actor["OrthographicCameraComponent"];
+                    if (sc)
+                    {
+                        auto c = a->AddComponent<OrthographicCameraComponent>();
+
+                        if (sc["OriginPoint"])
+                            c->SetOriginPoint((OrthographicCamera::OriginPoint)sc["OriginPoint"].as<int>());
                     }
                 }
 

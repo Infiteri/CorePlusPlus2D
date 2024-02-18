@@ -26,6 +26,10 @@ namespace Core
         TextureCollection textureCollection;
 
         std::string saveScenePath;
+
+        Scene* EditorScene;
+        OrthographicCamera* Editorcamera;
+        Vector2 Viewport;
     };
 
     class EditorLayer : public Layer

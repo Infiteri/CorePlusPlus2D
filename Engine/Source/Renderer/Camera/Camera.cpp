@@ -12,7 +12,8 @@ namespace Core
 
     void Camera::CalculateView()
     {
-        view = Matrix4::TranslateVec2(&position);
+        view = Matrix4::Translate(&position);
+        
     }
 
     void Camera::CalculateProjection()

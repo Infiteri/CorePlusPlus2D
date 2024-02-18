@@ -82,6 +82,20 @@ namespace Core
         }
     }
 
+    void World::CopyToActive(Scene *scene)
+    {
+        if (!scene)
+        {
+            CE_LOG("WORLD", Error, "World::CopyToActive: Scene cannot be a nullptr.");
+            return;
+        }
+
+        if (activeScene)
+            delete activeScene;
+
+        activeScene = Scene::Copy(scene);
+    }
+
     void World::InitializeActiveScene()
     {
         CE_CALL_METHOD_UTIL(Init);

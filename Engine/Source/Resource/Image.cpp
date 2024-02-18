@@ -11,9 +11,11 @@ namespace Core
         name = filename;
         width = height = channels = 0;
         data = stbi_load(filename.c_str(), &width, &height, &channels, 0);
+        hasData = true;
         if (!data)
         {
             CE_CORE_ERROR("Image::Image: '%s' image cannot be loaded.", filename.c_str());
+            hasData = false;
         }
     }
 
@@ -27,9 +29,10 @@ namespace Core
 
     void Image::FreeData()
     {
-        if (!data)
+        if (!hasData)
             return; // OK, the data was deleted earlier. (Happens in texture where FreeData is called in order to clear RAM and therefore no more data is present)
 
         stbi_image_free(data);
+        hasData = false;
     }
 }

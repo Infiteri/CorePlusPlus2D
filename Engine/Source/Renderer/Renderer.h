@@ -55,5 +55,6 @@ namespace Core
         static void RenderVertexArray(VertexArray *array);
         static void UploadTexture(Texture *text);
         // ? -- END TEMP ----
+        static Viewport* GetViewport();
     };
 }

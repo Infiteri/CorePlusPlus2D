@@ -22,6 +22,9 @@ namespace Core
     void EditorLayer::OnAttach()
     {
         state.textureCollection.Init();
+        state.Editorcamera = new OrthographicCamera(Engine::GetWindow()->GetWidth(), Engine::GetWindow()->GetHeight());
+        CameraSystem::AddOrthographicCamera(state.Editorcamera, "EditorCamera");
+        state.EditorScene = nullptr;
         StopSceneRuntime();
 
         // Scene *scene = World::CreateScene("New_Scene");
@@ -174,7 +177,14 @@ namespace Core
     {
         currentSceneState = SceneStatePlay;
 
+        state.EditorScene = Scene::Copy(World::GetActiveScene());
         World::StartActiveScene();
+
+        if (!Renderer::GetViewport())
+        {
+            return;
+        }
+        CameraSystem::GetActiveAsOrtho()->CalculateProjection(Renderer::GetViewport()->width, Renderer::GetViewport()->height);
     }
 
     void EditorLayer::StopSceneRuntime()
@@ -182,6 +192,14 @@ namespace Core
         currentSceneState = SceneStateStop;
 
         World::StopActiveScene();
+        if (state.EditorScene != nullptr)
+        {
+            World::CopyToActive(state.EditorScene);
+            delete state.EditorScene;
+            World::InitializeActiveScene();
+        }
+
+        CameraSystem::Activate("EditorCamera");
     }
 
     void EditorLayer::UpdateRuntime()

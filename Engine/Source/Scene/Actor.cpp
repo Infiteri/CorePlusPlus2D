@@ -1,6 +1,13 @@
 #include "Actor.h"
 #include "Renderer/Renderer.h"
 
+#define CE_COPY_COMPONENT_UTIL(type)             \
+    auto comp_##type = a->GetComponent<type>();  \
+    if (comp_##type)                             \
+    {                                            \
+        AddComponent<type>()->From(comp_##type); \
+    }
+
 namespace Core
 {
     Actor::Actor()
@@ -11,6 +18,20 @@ namespace Core
     Actor::~Actor()
     {
         Destroy();
+    }
+
+    void Actor::From(Actor *a)
+    {
+        SetName(a->GetName());
+        SetUUID(a->GetUUID()->Get());
+
+        GetTransform()->Position.Set(&a->GetTransform()->Position);
+        GetTransform()->Rotation.Set(&a->GetTransform()->Rotation);
+        GetTransform()->Scale.Set(&a->GetTransform()->Scale);
+
+        CE_COPY_COMPONENT_UTIL(MeshComponent);
+        CE_COPY_COMPONENT_UTIL(ActorScriptComponent);
+        CE_COPY_COMPONENT_UTIL(OrthographicCameraComponent);
     }
 
     void Actor::Init()

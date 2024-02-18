@@ -45,6 +45,16 @@ namespace Core
         CE_LOG("CAM_SYS", Debug, "Activated camera: %s.", name.c_str());
     }
 
+    void CameraSystem::EraseCamera(const std::string &name)
+    {
+        ortho_cameras.erase(name);
+    }
+
+    void CameraSystem::AddOrthographicCamera(OrthographicCamera *camera, const std::string &name)
+    {
+        ortho_cameras[name] = camera;
+    }
+
     OrthographicCamera *CameraSystem::GetActiveAsOrtho()
     {
         return (OrthographicCamera *)active_camera;

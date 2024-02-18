@@ -16,6 +16,7 @@ namespace Core
         int width;
         int height;
         int channels;
+        bool hasData;
         CeU8 *data;
 
     public:
@@ -29,5 +30,6 @@ namespace Core
         CE_IMAGE_INLINE_GETTER(int, Height, height);
         CE_IMAGE_INLINE_GETTER(int, Channels, channels);
         CE_IMAGE_INLINE_GETTER(CeU8 *, Data, data);
+        CE_IMAGE_INLINE_GETTER(bool, HasData, hasData);
     };
 }

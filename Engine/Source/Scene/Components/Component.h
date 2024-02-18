@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base.h"
+#include "Renderer/Camera/OrthographicCamera.h"
 #include "Renderer/Objects/Mesh.h"
 
 namespace Core
@@ -24,6 +25,8 @@ namespace Core
         virtual void Render(){};
         virtual void Stop(){};
         virtual void Destroy(){};
+
+        virtual void From(Component *other){};
     };
 
     class CE_API MeshComponent : public Component
@@ -32,6 +35,8 @@ namespace Core
         Mesh *mesh;
 
         MeshComponent();
+
+        void From(MeshComponent *other);
 
         void Start();
         void Render();
@@ -44,6 +49,21 @@ namespace Core
         std::string ClassName;
 
         ActorScriptComponent(){};
-        ~ActorScriptComponent(){};
+        void From(ActorScriptComponent *other);
+    };
+
+    class CE_API OrthographicCameraComponent : public Component
+    {
+    public:
+        OrthographicCamera *Camera;
+
+        OrthographicCameraComponent();
+
+        void SetOriginPoint(OrthographicCamera::OriginPoint point);
+
+        void Destroy();
+        void Update();
+
+        void From(OrthographicCameraComponent *other);
     };
 }
