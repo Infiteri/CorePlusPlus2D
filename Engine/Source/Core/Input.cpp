@@ -104,13 +104,14 @@ namespace Core
 
     void INPUT_INTERNAL_UpdateScroll(double x, double y)
     {
-        state.deltaScroll = 0;
-
         if (y == 0)
         {
+            state.deltaScroll = 0;
             state.lastScroll = 0;
             return;
         }
+
+        state.deltaScroll = 0;
 
         if (y < 0)
         {
@@ -120,7 +121,7 @@ namespace Core
         }
         else
         {
-            state.deltaScroll = y - Math::Positive(state.lastScroll);
+            state.deltaScroll = y + Math::Positive(state.lastScroll);
             state.lastScroll = Math::Positive(y);
             state.negativeDelta = 1;
         }

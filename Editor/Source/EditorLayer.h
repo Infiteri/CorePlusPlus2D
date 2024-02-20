@@ -3,6 +3,7 @@
 #include "Core.h"
 #include "EditorSceneViewport.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include "Panels/ContentBrowserPanel.h"
 #include <imgui.h>
 
 namespace Core
@@ -11,20 +12,24 @@ namespace Core
     {
         Texture *IconPlayTexture;
         Texture *IconStopTexture;
+        Texture *FolderTexture;
+        Texture *IconTexture;
 
         void Init();
     };
 
     struct EditorState
     {
-        EditorSceneViewport editorSceneViewport;
         SceneHierarchyPanel hierarchyPanel;
+        ContentBrowserPanel contentPanel;
+        EditorSceneViewport editorSceneViewport;
+
         TextureCollection textureCollection;
 
         std::string saveScenePath;
 
         Scene *EditorScene;
-        OrthographicCamera *Editorcamera;
+        OrthographicCamera *EditorCamera;
         Vector2 Viewport;
 
         ImVec2 LeftTopViewport;
@@ -42,6 +47,9 @@ namespace Core
         void OnAttach();
         void OnUpdate();
         void OnImGuiRender();
+
+        void InitializeAssets();
+        void InitializeCamera();
 
         void UTIL_ColorThing(const char *label, int target);
 
@@ -72,8 +80,8 @@ namespace Core
         // -----------
 
         static void STATIC_EDITOR_UTIL_ResizeViewport(const Vector2 &viewport);
-        static void STATIC_EDITOR_UTIL_MidSceneRender(Scene*active);
+        static void STATIC_EDITOR_UTIL_MidSceneRender(Scene *active);
 
-        static EditorLayer* GetInstance();
+        static EditorLayer *GetInstance();
     };
 }

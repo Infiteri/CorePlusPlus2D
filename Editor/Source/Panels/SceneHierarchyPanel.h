@@ -14,6 +14,6 @@ namespace Core
         void RenderGUIActor(Actor *a);
         void RenderGUIActorProperties(Actor *a);
 
-        void RenderGUI(); /// @brief Will render the active scene's hierarchy
+        void OnImGuiRender(); /// @brief Will render the active scene's hierarchy
     };
 }

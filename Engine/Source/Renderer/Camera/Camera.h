@@ -23,11 +23,11 @@ namespace Core
 
         virtual void AddZoom(float newZoom);
         virtual void SetZoom(float newZoom);
+        inline float GetZoom() { return zoom; };
 
         inline Matrix4 *GetProjection() { return &projection; };
         inline Matrix4 *GetView() { return &view; };
         inline Matrix4 GetViewInverted() { return Matrix4::Invert(&view); };
         inline Vector3 *GetPosition() { return &position; };
-        inline float GetZoom() { return zoom; };
     };
 }

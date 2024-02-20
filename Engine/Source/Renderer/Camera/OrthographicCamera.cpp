@@ -19,8 +19,6 @@ namespace Core
         this->width = _width;
         this->height = _height;
 
-        CE_TRACE("Zoom: %.3f", zoom);
-
         switch (originPoint)
         {
         case Middle:

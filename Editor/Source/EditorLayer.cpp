@@ -17,23 +17,27 @@ namespace Core
     void EditorLayer::OnAttach()
     {
         inst = this;
-        state.textureCollection.Init();
-        state.Editorcamera = new OrthographicCamera(Engine::GetWindow()->GetWidth(), Engine::GetWindow()->GetHeight());
-        CameraSystem::AddOrthographicCamera(state.Editorcamera, "EditorCamera");
-        state.Editorcamera->SetOriginPoint(OrthographicCamera::Middle);
-        state.Editorcamera->SetZoom(5);
+        state.contentPanel.BaseDirectoryPath = "EngineResources";
+        InitializeAssets();
+        InitializeCamera();
         state.EditorScene = nullptr;
-        StopSceneRuntime();
 
-        // Scene *scene = World::CreateScene("New_Scene");
-        // auto a = scene->SpawnActor<Actor>();
-        // a->SetName("Mesh Actor");
-        // auto m = a->AddComponent<MeshComponent>();
-
-        // m->mesh->SetMaterial("EngineResources/Materials/Test.ce_mat");
-        // m->mesh->SetGeometry(new SquareGeometry(100, 100));
         state.saveScenePath = "EngineResources/Scenes/Main.ce_scene"; // TODO: Change
         OpenScene(state.saveScenePath);
+        StopSceneRuntime();
+    }
+
+    void EditorLayer::InitializeAssets()
+    {
+        state.textureCollection.Init();
+    }
+
+    void EditorLayer::InitializeCamera()
+    {
+        state.EditorCamera = new OrthographicCamera(Engine::GetWindow()->GetWidth(), Engine::GetWindow()->GetHeight());
+        CameraSystem::AddOrthographicCamera(state.EditorCamera, "EditorCamera");
+        state.EditorCamera->SetOriginPoint(OrthographicCamera::Middle);
+        state.EditorCamera->SetZoom(5);
     }
 
     void EditorLayer::OnUpdate()
@@ -67,7 +71,8 @@ namespace Core
         ImGui::Text("FPS: %i", (int)(1.0 / Engine::GetDeltaTime()));
         ImGui::End();
 
-        state.hierarchyPanel.RenderGUI();
+        state.hierarchyPanel.OnImGuiRender();
+        state.contentPanel.OnImGuiRender();
 
         state.editorSceneViewport.RenderGUI();
         state.editorSceneViewport.RenderGUIDockspaceEnd();
@@ -190,7 +195,7 @@ namespace Core
     {
         // ? camera movement
         {
-            auto cam = state.Editorcamera;
+            auto cam = state.EditorCamera;
             if (!cam)
                 return;
 
@@ -205,15 +210,15 @@ namespace Core
                     mousePos.y > state.LeftTopViewport.y + windowPos.y &&
                     mousePos.y < state.BottomRightViewport.y + state.LeftTopViewport.y + windowPos.y)
                 {
-                    cam->GetPosition()->x += mouseDelta.x;
-                    cam->GetPosition()->y += mouseDelta.y;
+                    cam->GetPosition()->x += mouseDelta.x / cam->GetZoom();
+                    cam->GetPosition()->y += mouseDelta.y / cam->GetZoom();
                 }
             }
 
             float ScrollDelta = Input::GetMouseWheelDelta();
             if (Input::GetKey(Input::LeftControl) && ScrollDelta != 0)
             {
-                state.Editorcamera->AddZoom(ScrollDelta * 0.05);
+                state.EditorCamera->AddZoom(ScrollDelta * 0.05);
             }
         }
     }
@@ -251,6 +256,8 @@ namespace Core
     {
         IconPlayTexture = new Texture("EngineResources/Images/Icons/PlayButton.png");
         IconStopTexture = new Texture("EngineResources/Images/Icons/StopButton.png");
+        FolderTexture = new Texture("EngineResources/Images/Icons/folder.png");
+        IconTexture = new Texture("EngineResources/Images/Icons/icon.png");
     }
 
     EditorLayer *EditorLayer::GetInstance()

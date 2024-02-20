@@ -82,7 +82,7 @@ namespace Core
         }
     }
 
-    void SceneHierarchyPanel::RenderGUI()
+    void SceneHierarchyPanel::OnImGuiRender()
     {
         Scene *active = World::GetActiveScene();
         if (!active)

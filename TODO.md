@@ -19,3 +19,6 @@
 ## PARENTING (WIP)
 
 [ - ] Add parenting support
+
+## EDITOR
+[ - ] Drag-drop stuff

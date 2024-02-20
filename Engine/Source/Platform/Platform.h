@@ -35,6 +35,12 @@ namespace Core
         std::unordered_map<std::string, DynamicLibraryFunction *> functions;
     };
 
+    struct DirectoryEntry
+    {
+        bool IsFolder = false;
+        std::string Filename;
+    };
+
     class CE_API Platform
     {
     public:
@@ -51,6 +57,13 @@ namespace Core
         static void *Allocate(CeU64 size);
         static void *MemCpy(void *dest, const void *source, CeU64 size);
 
+        // ------------------------------------------------
+
+        // ---------------------- DIRECTORY ---------------
+
+        static std::vector<std::string> GetFilePathsInDirectory(const std::string &directoryPath);
+        static std::vector<std::string> GetFolderPathsInDirectory(const std::string &directoryPath);
+        static std::vector<DirectoryEntry> GetDirectoryEntries(const std::string &directoryPath);
         // ------------------------------------------------
 
         // -------------------- LIBRARY -------------------
