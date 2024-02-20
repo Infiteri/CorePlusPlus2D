@@ -1,29 +1,27 @@
 #include "EditorLayer.h"
-#include <imgui.h>
 
 namespace Core
 {
+    static EditorLayer *inst;
+
     EditorLayer::EditorLayer()
     {
-        {
-            ICoreEditorSceneViewportConfiguration *configViewport = new CoreEditorViewportConfiguration();
-            state.editorSceneViewport.EditorSceneConfig = configViewport;
-        }
     }
 
     EditorLayer::~EditorLayer()
     {
-        delete state.editorSceneViewport.EditorSceneConfig;
-
         delete state.textureCollection.IconPlayTexture;
         delete state.textureCollection.IconStopTexture;
     }
 
     void EditorLayer::OnAttach()
     {
+        inst = this;
         state.textureCollection.Init();
         state.Editorcamera = new OrthographicCamera(Engine::GetWindow()->GetWidth(), Engine::GetWindow()->GetHeight());
         CameraSystem::AddOrthographicCamera(state.Editorcamera, "EditorCamera");
+        state.Editorcamera->SetOriginPoint(OrthographicCamera::Middle);
+        state.Editorcamera->SetZoom(5);
         state.EditorScene = nullptr;
         StopSceneRuntime();
 
@@ -65,6 +63,8 @@ namespace Core
         UTIL_ColorThing("ButtonActive", ImGuiCol_ButtonActive);
         UTIL_ColorThing("FrameBg", ImGuiCol_FrameBg);
         UTIL_ColorThing("FrameBgHovered", ImGuiCol_FrameBgHovered);
+        ImGui::Text("Delta: %f", (float)Engine::GetDeltaTime());
+        ImGui::Text("FPS: %i", (int)(1.0 / Engine::GetDeltaTime()));
         ImGui::End();
 
         state.hierarchyPanel.RenderGUI();
@@ -152,27 +152,6 @@ namespace Core
         serializer.Serialize(state.saveScenePath);
     }
 
-    //? CORE STATIC ---
-
-    void EditorLayer::STATIC_EDITOR_UTIL_ResizeViewport(const Vector2 &viewport)
-    {
-        Renderer::ResizeViewport({(int)viewport.x, (int)viewport.y});
-    }
-
-    void EditorLayer::UTIL_ColorThing(const char *label, int target)
-    {
-        auto &colors = ImGui::GetStyle().Colors;
-
-        float data[4] = {colors[target].x, colors[target].y, colors[target].z, colors[target].w};
-        if (ImGui::ColorEdit4(label, data))
-        {
-            colors[target].x = data[0];
-            colors[target].y = data[1];
-            colors[target].z = data[2];
-            colors[target].w = data[3];
-        }
-    }
-
     void EditorLayer::StartSceneRuntime()
     {
         currentSceneState = SceneStatePlay;
@@ -209,17 +188,73 @@ namespace Core
 
     void EditorLayer::UpdateEditor()
     {
+        // ? camera movement
+        {
+            auto cam = state.Editorcamera;
+            if (!cam)
+                return;
+
+            auto mousePos = Input::GetMousePosition();
+            auto mouseDelta = Input::GetMouseDelta();
+            auto windowPos = Vector2(Engine::GetWindow()->GetX(), Engine::GetWindow()->GetY());
+
+            if (Input::GetButton(Input::ButtonRight))
+            {
+                if (mousePos.x > state.LeftTopViewport.x + windowPos.x &&
+                    mousePos.x < state.BottomRightViewport.x + state.LeftTopViewport.x + windowPos.x &&
+                    mousePos.y > state.LeftTopViewport.y + windowPos.y &&
+                    mousePos.y < state.BottomRightViewport.y + state.LeftTopViewport.y + windowPos.y)
+                {
+                    cam->GetPosition()->x += mouseDelta.x;
+                    cam->GetPosition()->y += mouseDelta.y;
+                }
+            }
+
+            float ScrollDelta = Input::GetMouseWheelDelta();
+            if (Input::GetKey(Input::LeftControl) && ScrollDelta != 0)
+            {
+                state.Editorcamera->AddZoom(ScrollDelta * 0.05);
+            }
+        }
     }
 
-    //? END CORE STATIC
+    //? CORE STATIC ---
 
-    void CoreEditorViewportConfiguration::MidSceneViewportRenderCall(Scene *scene)
+    void EditorLayer::STATIC_EDITOR_UTIL_ResizeViewport(const Vector2 &viewport)
     {
+        Renderer::ResizeViewport({(int)viewport.x, (int)viewport.y});
     }
+
+    void EditorLayer::STATIC_EDITOR_UTIL_MidSceneRender(Scene *active)
+    {
+
+        // inst->state.LeftTopViewport = ImGui::GetWindowPos();
+        // inst->state.BottomRightViewport = ImGui::GetWindowSize();
+    }
+
+    void EditorLayer::UTIL_ColorThing(const char *label, int target)
+    {
+        auto &colors = ImGui::GetStyle().Colors;
+
+        float data[4] = {colors[target].x, colors[target].y, colors[target].z, colors[target].w};
+        if (ImGui::ColorEdit4(label, data))
+        {
+            colors[target].x = data[0];
+            colors[target].y = data[1];
+            colors[target].z = data[2];
+            colors[target].w = data[3];
+        }
+    }
+    //? END CORE STATIC
 
     void TextureCollection::Init()
     {
         IconPlayTexture = new Texture("EngineResources/Images/Icons/PlayButton.png");
         IconStopTexture = new Texture("EngineResources/Images/Icons/StopButton.png");
+    }
+
+    EditorLayer *EditorLayer::GetInstance()
+    {
+        return inst;
     }
 }

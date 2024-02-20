@@ -96,5 +96,12 @@ namespace Core
         {
             return fabs(a);
         }
+        float Positive(float a)
+        {
+            if (a == 0)
+                return 0;
+
+            return a < 0 ? -a : a;
+        }
     }
 }

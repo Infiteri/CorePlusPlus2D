@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Base.h"
+#include "Math/Vectors.h"
 
 namespace Core
 {
@@ -138,6 +139,13 @@ namespace Core
             Menu = 348
         };
 
+        enum Buttons
+        {
+            ButtonLeft,
+            ButtonRight,
+            ButtonMiddle,
+        };
+
         Input(){};
         ~Input(){};
 
@@ -145,8 +153,24 @@ namespace Core
         static void Shutdown();
         static bool GetKey(Keys key);
 
+        static bool GetButton(Buttons button);
+
+        static int GetMouseX();
+        static int GetMouseY();
+        static int GetMouseLastX();
+        static int GetMouseLastY();
+        static int GetMouseDeltaX();
+        static int GetMouseDeltaY();
+        static Vector2 GetMousePosition();
+        static Vector2 GetMouseDelta();
+
+        static float GetMouseWheelDelta();
+
         // TODO: Add mouse
     };
 
     void INPUT_INTERNAL_UpdateKey(Input::Keys key, bool pressed);
+    void INPUT_INTERNAL_UpdateButton(Input::Buttons button, bool pressed);
+    void INPUT_INTERNAL_UpdateMouse(float x, float y);
+    void INPUT_INTERNAL_UpdateScroll(double x, double y);
 }

@@ -1,4 +1,5 @@
 #include "OrthographicCamera.h"
+#include "Core/Logger.h"
 
 namespace Core
 {
@@ -18,17 +19,36 @@ namespace Core
         this->width = _width;
         this->height = _height;
 
+        CE_TRACE("Zoom: %.3f", zoom);
+
         switch (originPoint)
         {
         case Middle:
-            projection = Matrix4::Ortho(-(width / 2), width / 2, -(height / 2), height / 2, -1.0, 1.0);
+            projection = Matrix4::Ortho(-(width / (2 * zoom)), width / (2 * zoom), -(height / (2 * zoom)), height / (2 * zoom), -1.0, 1.0);
             break;
 
         case Left:
         default:
-            projection = Matrix4::Ortho(0, width, 0, height, -1.0, 1.0);
+            projection = Matrix4::Ortho(0, width * zoom, 0, height * zoom, -1.0, 1.0);
             break;
         }
+    }
+
+    void OrthographicCamera::CalculateProjection()
+    {
+        CalculateProjection(width, height);
+    }
+
+    void OrthographicCamera::AddZoom(float newZoom)
+    {
+        zoom += newZoom;
+        CalculateProjection(width, height);
+    }
+
+    void OrthographicCamera::SetZoom(float newZoom)
+    {
+        zoom = newZoom;
+        CalculateProjection(width, height);
     }
 
     void OrthographicCamera::SetOriginPoint(OriginPoint point)

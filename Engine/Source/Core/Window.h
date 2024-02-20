@@ -20,6 +20,7 @@ namespace Core
         int width;
         int height;
         const char *title;
+        bool VSync;
 
         bool acceptDefaultWindowResizeCallback;
         WindowSizeMode mode;
@@ -32,6 +33,8 @@ namespace Core
         WindowInformation info;
         GLFWwindow *handle;
 
+        int x;
+        int y;
         int width;
         int height;
 
@@ -44,6 +47,9 @@ namespace Core
 
         int GetWidth();
         int GetHeight();
+
+        int GetX();
+        int GetY();
 
         inline WindowInformation *GetInformation() { return &info; };
         inline GLFWwindow *GetHandle() { return handle; };

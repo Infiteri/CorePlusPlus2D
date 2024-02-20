@@ -26,6 +26,10 @@ namespace Core
         ~OrthographicCamera();
 
         void CalculateProjection(float width, float height);
+        void CalculateProjection();
+
+        void AddZoom(float newZoom);
+        void SetZoom(float newZoom);
 
         void SetOriginPoint(OriginPoint point);
         inline OriginPoint GetOriginPoint() { return originPoint; };

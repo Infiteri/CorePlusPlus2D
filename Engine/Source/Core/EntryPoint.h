@@ -16,6 +16,7 @@ int main(int argc, char const *argv[])
     EConfig.WindowInformation.height = 576;
     EConfig.WindowInformation.title = "Core Engine";
     EConfig.WindowInformation.acceptDefaultWindowResizeCallback = true;
+    EConfig.WindowInformation.VSync = true;
     EConfig.WindowInformation.mode = Core::WindowSizeMode::Maximized;
 
     auto app = Core::CreateApplication(&EConfig);

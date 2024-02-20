@@ -96,7 +96,7 @@ namespace Core
     void Engine::Update()
     {
         float time = (float)glfwGetTime();
-        timer.delta = timer.last - time;
+        timer.delta = time - timer.last;
         timer.last = time;
 
         LayerStack::Update();

@@ -3,14 +3,10 @@
 #include "Core.h"
 #include "EditorSceneViewport.h"
 #include "Panels/SceneHierarchyPanel.h"
+#include <imgui.h>
 
 namespace Core
 {
-    struct CoreEditorViewportConfiguration : public ICoreEditorSceneViewportConfiguration
-    {
-        void MidSceneViewportRenderCall(Scene *scene);
-    };
-
     struct TextureCollection
     {
         Texture *IconPlayTexture;
@@ -27,9 +23,12 @@ namespace Core
 
         std::string saveScenePath;
 
-        Scene* EditorScene;
-        OrthographicCamera* Editorcamera;
+        Scene *EditorScene;
+        OrthographicCamera *Editorcamera;
         Vector2 Viewport;
+
+        ImVec2 LeftTopViewport;
+        ImVec2 BottomRightViewport;
     };
 
     class EditorLayer : public Layer
@@ -73,5 +72,8 @@ namespace Core
         // -----------
 
         static void STATIC_EDITOR_UTIL_ResizeViewport(const Vector2 &viewport);
+        static void STATIC_EDITOR_UTIL_MidSceneRender(Scene*active);
+
+        static EditorLayer* GetInstance();
     };
 }

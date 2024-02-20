@@ -29,5 +29,7 @@ namespace Core
 
         CE_API float Pow(float a, float b);
         CE_API float Abs(float a);
+
+        CE_API float Positive(float a);
     };
 }

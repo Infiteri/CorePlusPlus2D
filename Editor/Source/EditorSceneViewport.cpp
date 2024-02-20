@@ -1,4 +1,3 @@
-
 #include "EditorLayer.h"
 #include <imgui.h>
 
@@ -70,14 +69,13 @@ namespace Core
             EditorLayer::STATIC_EDITOR_UTIL_ResizeViewport({viewportSize.x, viewportSize.y});
         }
 
-
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {0, 0});
         ImGui::Image((void *)(CeU64)(CeU32)(Renderer::GetFrameBuffer()->GetRenderPass(0)->id), viewportSize, ImVec2{0, 1}, ImVec2{1, 0});
         ImGui::PopStyleVar();
 
-
-        if (EditorSceneConfig)
-            EditorSceneConfig->MidSceneViewportRenderCall(active);
+        EditorLayer::GetInstance()->state.LeftTopViewport = ImGui::GetWindowPos();
+        EditorLayer::GetInstance()->state.BottomRightViewport = ImGui::GetWindowSize();
+        EditorLayer::STATIC_EDITOR_UTIL_MidSceneRender(active);
 
         ImGui::End();
     }
